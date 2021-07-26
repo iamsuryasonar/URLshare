@@ -42,28 +42,26 @@ const store = new Vuex.Store({
             id: user.uid,
             name: user.displayName,
             email: user.email,
+            username: payload.username,
           };
           commit("setUser", newUser);
         })
         .then(() => {
           firebase
-            .firestore()
-            .collection("usernames")
-            .doc(payload.username)
+            .database()
+            .ref("usernames/" + payload.username)
             .set({
               userid: firebase.auth().currentUser.uid,
-            })
-            .then(() => {
-              firebase
-                .firestore()
-                .collection("users")
-                .doc(firebase.auth().currentUser.uid)
-                .set({
-                  username: payload.username,
-                });
             });
         })
-        .then(() => {})
+        .then(() => {
+          firebase
+            .database()
+            .ref("users/" + firebase.auth().currentUser.uid)
+            .set({
+              username: payload.username,
+            });
+        })
         .catch((error) => {
           commit("setLoading", false);
           console.log(error);
@@ -102,36 +100,6 @@ const store = new Vuex.Store({
       firebase.auth().signOut();
       //commit('setUser', null)
       commit("setAuth", null);
-    },
-
-    updateusername({ commit }, payload) {
-      var userId = firebase.auth().currentUser.uid;
-      return new Promise((resolve, reject) => {
-        firebase
-          .firestore()
-          .collection("usernames")
-          .doc(payload.newusername)
-          .set({
-            userid: firebase.auth().currentUser.uid,
-          })
-          .then(() => {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(userId)
-              .set({
-                username: payload.newusername,
-              });
-          })
-          .then(() => {
-            this.snackbar = true;
-            this.loading = false;
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
     },
 
     changepassword({ commit }, payload) {
@@ -199,25 +167,18 @@ const store = new Vuex.Store({
           )
         )
         .then(() => {
-          db.collection("users")
-            .doc(firebase.auth().currentUser.uid)
-            .collection("linkprofile")
-            .get()
-            .then((res) => {
-              res.forEach((element) => {
-                element.ref.delete();
-              });
+          firebase
+            .database()
+            .ref("users/" + firebase.auth().currentUser.uid)
+            .remove()
+            .then(() => {
+              firebase.auth().currentUser.delete(),
+                (this.confirmoverlay = false);
             })
-            .then(() =>
-              db
-                .collection("users")
-                .doc(userId)
-                .delete()
-            )
-            .then(
-              () => firebase.auth().currentUser.delete(),
-              (this.confirmoverlay = false)
-            );
+            //---------> username also needs to be deleted <-----------
+            .catch((error) => {
+              alert(error.message);
+            });
         });
     },
   },

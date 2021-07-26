@@ -1,23 +1,22 @@
-import Vue from 'vue'
-import App from './App.vue'
-import Vuex from 'vuex'
-import store from './store/store'
-import vuetify from './plugins/vuetify';
-import firebase from 'firebase';
-import router from './routes';
-import firebaseConfig from './firebaseconfig.js'
+import Vue from "vue";
+import App from "./App.vue";
+import Vuex from "vuex";
+import store from "./store/store";
+import vuetify from "./plugins/vuetify";
+import firebase from "firebase";
+import router from "./routes";
+import firebaseConfig from "./firebaseconfig.js";
 
 // Vue.use(Vuex)
-  
-require('firebase/firestore');
 
+require("firebase/firestore");
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 Vue.prototype.$firebase = firebase;
-Vue.config.productionTip = false
 
+Vue.config.productionTip = false;
 
-const app =  new Vue({
+const app = new Vue({
   store,
   vuetify,
   router,
@@ -37,7 +36,7 @@ const app =  new Vue({
   //   })
   // },
 
+  render: (h) => h(App),
 
-render: h => h(App),
-}).$mount('#app')
-
+  created() {},
+}).$mount("#app");

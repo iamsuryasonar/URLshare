@@ -222,19 +222,8 @@ export default {
   },
 
   computed: {
-    // user() {
-    //   return this.$store.getters.user;
-    // },
   },
   mounted() {},
-
-  /*  beforeCreate() {
-    console.log("user", store.getters.auth)
-    if (this.$store.state.auth === true) {
-      this.$router.push("/Profile");
-    }
-  }, */
-
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -247,15 +236,12 @@ export default {
 
     //get username
     firebase
-      .firestore()
-      .collection("users")
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then((doc) => {
-          this.username = doc.data().username;
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
+      .database()
+      .ref("users/" + firebase.auth().currentUser.uid)
+      .on("value", (snapshot) => {
+        if (snapshot != null) {
+          this.username = snapshot.val().username;
+        }
       });
   },
 

@@ -20,7 +20,7 @@
                       outlined
                       rounded
                       small
-                      :href="item.link"
+                      :href="'//' + item.link"
                       target="_blank"
                       text
                     >
@@ -55,51 +55,42 @@ export default {
       items: [],
     };
   },
- /*  beforeCreate() {
+  /*  beforeCreate() {
     if (this.$store.state.user) {
       this.$router.push("/LogIn");
     }
   }, */
-  created() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.getData(user.uid);
-      }
-    });
-  },
+  created() {},
 
   methods: {
     getData() {
-      const db = this.$firebase
-        .firestore()
-        .collection("users")
-        .doc(firebase.auth().currentUser.uid);
-
-      db.collection("linkprofile")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
+      this.items = [];
+      firebase
+        .database()
+        .ref("users/" + firebase.auth().currentUser.uid + "/urls/")
+        .on("value", (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
             this.items.push({
-              index: doc.id,
-              title: doc.data().title,
-              description: doc.data().description,
-              link: doc.data().link,
-              color: doc.data().color,
+              index: childSnapshot.key,
+              title: childSnapshot.val().title,
+              description: childSnapshot.val().description,
+              link: childSnapshot.val().link,
+              color: childSnapshot.val().color,
             });
           });
         });
     },
 
-    deletebtn(docId) {
+    deletebtn(index) {
       firebase
-        .firestore()
-        .collection("users")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("linkprofile")
-        .doc(docId)
-        .delete()
+        .database()
+        .ref(
+          "users/" + firebase.auth().currentUser.uid + "/urls/" + index + "/"
+        )
+        .remove()
         .then(() => {
-          this.$router.go();
+          // this.$router.go();
+          this.getData();
         })
         .catch((error) => {
           alert(error.message);
@@ -107,9 +98,4 @@ export default {
     },
   },
 };
-
-/*
-
- 
-*/
 </script>

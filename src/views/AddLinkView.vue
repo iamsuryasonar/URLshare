@@ -14,11 +14,13 @@
               <v-card-title class="ml-15">Add Link</v-card-title>
               <div class="mt-3 d-flex flex-no-wrap justify-space-around">
                 <div>
-                  <v-form ref="form" lazy-validation>
+                  <v-form ref="form" v-model="valid" lazy-validation>
                     <v-text-field
                       class="mt-0 ml-3"
                       rounded
                       v-model="items.title"
+                      :rules="titleRules"
+                      required
                       outlined
                       small
                       placeholder="Enter Link Title"
@@ -28,6 +30,8 @@
                       class="mt-0 ml-3"
                       rounded
                       v-model="items.description"
+                      :rules="descriptionRules"
+                      required
                       outlined
                       small
                       placeholder="Enter Description"
@@ -38,6 +42,8 @@
                       class="ml-3 mt-0"
                       outlined
                       v-model="items.link"
+                      :rules="urlRules"
+                      required
                       rounded
                       placeholder="Enter Link"
                       target="_blank"
@@ -48,6 +54,7 @@
                     block
                     large
                     class="ml-3 mt-4 mb-8"
+                    :disabled="!valid"
                     @click="addLink"
                     outlined
                     rounded
@@ -73,31 +80,41 @@ export default {
       snackbar: false,
       timeout: 2000,
       overlay: false,
+      valid: true,
+
       items: {
         title: "",
         description: "",
         link: "",
         icon: "",
+        username: "",
         color: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
+        //it will select the same color if the page is not refreshed
       },
+      titleRules: [(v) => !!v || "Title is required"],
+      descriptionRules: [(v) => !!v || "Description is required"],
+      urlRules: [(v) => !!v || "Url is required"],
     };
   },
-  /*  beforeCreate() {
-    if (this.$store.state.user=== null || this.$store.state.user===undefined) {
-      this.$router.push("/LogIn");
-    }
-  }, */ 
+
   created() {
   },
 
   methods: {
     addLink() {
+      this.$refs.form.validate();
+
+      var uniqueUrlKey = firebase
+        .database()
+        .ref()
+        .child("urls")
+        .push().key;
+
       firebase
-        .firestore()
-        .collection("users")
-        .doc(firebase.auth().currentUser.uid)
-        .collection("linkprofile")
-        .add({
+        .database()
+        .ref("users/" + firebase.auth().currentUser.uid + "/urls/" + uniqueUrlKey)
+        .set({
+          id: uniqueUrlKey,
           title: this.items.title,
           description: this.items.description,
           link: this.items.link,
@@ -111,6 +128,7 @@ export default {
         .catch((error) => {
           alert(error.message);
         });
+      this.$refs.form.reset();
     },
   },
 };

@@ -33,8 +33,6 @@
   </div>
 </template>
 
-
-
 <script>
 import firebase from "firebase";
 export default {
@@ -94,7 +92,6 @@ export default {
       return this.onlinenav.filter((item) => item.name != this.$route.name);
     },
     offlinenavitem() {
-    
       return this.offlinenav.filter((item) => item.name != this.$route.name);
     },
   },
@@ -117,4 +114,3 @@ export default {
   transition: top 0.3s;
 }
 </style>
-     
