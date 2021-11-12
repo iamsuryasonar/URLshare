@@ -25,11 +25,12 @@
       </v-container>
       <v-container>
         <v-btn
-          :disabled="!valid"
+          :disabled="isDisabled"
           color="success"
           class="mr-4"
-          @click="validate"
           :loading="loading"
+          @click="validate"
+          
         >
           Log In
         </v-btn>
@@ -70,6 +71,14 @@ export default {
   //   }
   // },
   computed: {
+    isDisabled() {
+      if(this.email!= "" && this.password != ""){
+        return false
+      }else{
+        return true
+      }
+      },
+
     user() {
       return this.$store.getters.user;
     },
@@ -85,6 +94,7 @@ export default {
         email: this.email,
         password: this.password,
       });
+      this.loading = false;
       //this.$router.push("/Profile"); //this needs to be fixed
       this.$refs.form.reset();
     },

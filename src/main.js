@@ -16,7 +16,7 @@ Vue.prototype.$firebase = firebase;
 
 Vue.config.productionTip = false;
 
-const app = new Vue({
+export const app = new Vue({
   store,
   vuetify,
   router,

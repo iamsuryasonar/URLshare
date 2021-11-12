@@ -54,7 +54,8 @@
                     block
                     large
                     class="ml-3 mt-4 mb-8"
-                    :disabled="!valid"
+                    :disabled="isDisabled"
+                    :loading="loading"
                     @click="addLink"
                     outlined
                     rounded
@@ -81,6 +82,7 @@ export default {
       timeout: 2000,
       overlay: false,
       valid: true,
+      loading: false,
 
       items: {
         title: "",
@@ -88,44 +90,68 @@ export default {
         link: "",
         icon: "",
         username: "",
-        color: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
-        //it will select the same color if the page is not refreshed
       },
       titleRules: [(v) => !!v || "Title is required"],
       descriptionRules: [(v) => !!v || "Description is required"],
       urlRules: [(v) => !!v || "Url is required"],
     };
   },
-
-  created() {
+  computed: {
+    isDisabled() {
+      if (
+        this.items.title != "" &&
+        this.items.description != "" &&
+        this.items.link != ""
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
   },
+  created() {},
 
   methods: {
     addLink() {
       this.$refs.form.validate();
-
+      this.loading = true;
       var uniqueUrlKey = firebase
         .database()
         .ref()
         .child("urls")
         .push().key;
 
+      //trims and then concat https:// to url(link)
+      this.items.link.trim();
+      if (this.items.link.substr(0, 8) === "https://") {
+        this.items.link = this.items.link;
+      } else if (this.items.link.substr(0, 7) === "http://") {
+        this.items.link = "https://" + this.items.link.replace("http://", "");
+      }else if (this.items.link.substr(0, 3) === "www") {
+        this.items.link = "https://" + this.items.link;
+      }
+
       firebase
         .database()
-        .ref("users/" + firebase.auth().currentUser.uid + "/urls/" + uniqueUrlKey)
+        .ref(
+          "users/" + firebase.auth().currentUser.uid + "/urls/" + uniqueUrlKey
+        )
         .set({
           id: uniqueUrlKey,
           title: this.items.title,
           description: this.items.description,
           link: this.items.link,
-          color: this.items.color,
+          //to add random color everytime a new link is added
+          color: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
         })
         .then(() => {
+          this.loading = false;
           this.$refs.form.reset();
           this.snackbar = true;
           this.loading = false;
         })
         .catch((error) => {
+          this.loading = false;
           alert(error.message);
         });
       this.$refs.form.reset();

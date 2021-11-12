@@ -6,7 +6,15 @@
       >
       <v-spacer></v-spacer>
       <v-list>
-        <v-list-item v-if="isonline">
+        <v-list-item align-center v-if="isonline">
+          <v-text-field
+            solo
+            flat
+            label="Username"
+            hide-details
+            v-model="username"
+          ></v-text-field>
+          <v-icon @click="searchUsername">mdi-account-search</v-icon>
           <v-btn
             v-for="item in onlinenavitem"
             :key="item.icon"
@@ -18,7 +26,15 @@
         </v-list-item>
       </v-list>
       <v-list>
-        <v-list-item v-if="isoffline">
+        <v-list-item align-center v-if="isoffline">
+          <v-text-field
+            solo
+            flat
+            label="Username"
+            hide-details
+            v-model="username"
+          ></v-text-field>
+          <v-icon @click="searchUsername">mdi-account-search</v-icon>
           <v-btn
             v-for="item in offlinenavitem"
             :key="item.icon"
@@ -35,6 +51,7 @@
 
 <script>
 import firebase from "firebase";
+import { app } from "../main";
 export default {
   name: "NewNav",
 
@@ -43,6 +60,7 @@ export default {
     navitems: [],
     isonline: "",
     isoffline: "",
+    username: "",
 
     onlinenav: [
       {
@@ -85,7 +103,21 @@ export default {
     ],
   }),
 
-  method: {},
+  methods: {
+    searchUsername() {
+      if (this.$router.currentRoute.name !== "LinkView") {
+        this.$router
+          .replace({ name: "LinkView", params: { username: this.username } })
+          .catch((error) => {
+            console.log(error.name);
+          });
+      } else {
+        this.$store.dispatch("getLinks", {
+          username: this.username,
+        });
+      }
+    },
+  },
 
   computed: {
     onlinenavitem() {

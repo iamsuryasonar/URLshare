@@ -11,14 +11,7 @@ export default {
 
   components: {},
 
-  data: () => ({
-    //
-  }),
-  // beforeCreate() {
-  //   if (this.$store.state.user) {
-  //     this.$router.push("/Profile");
-  //   }
-  // },
+  data: () => ({}),
 
   methods: {},
 };

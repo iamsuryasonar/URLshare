@@ -9,6 +9,7 @@ const store = new Vuex.Store({
     user: {},
     auth: false,
     loading: false,
+    links: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -25,10 +26,45 @@ const store = new Vuex.Store({
     setLoading(state, payload) {
       state.loading = payload;
     },
+    setLinks(state, payload) {
+      state.links = payload;
+    },
   },
   actions: {
     actionauthenticated({ commit }, payload) {
       commit("setAuth", payload);
+    },
+
+    getLinks({ commit }, payload) {
+      firebase
+        .database()
+        .ref("usernames/" + payload.username + "/userid/")
+        .once("value", (snapshot) => {
+          if (snapshot.exists()) {
+            firebase
+              .database()
+              .ref("users/" + snapshot.val() + "/urls/")
+              .on("value", (snapshot) => {
+                if (snapshot.val() != null) {
+                  this.state.links.length = 0;
+
+                  snapshot.forEach((childSnapshot) => {
+                    this.state.links.push({
+                      index: childSnapshot.key,
+                      title: childSnapshot.val().title,
+                      description: childSnapshot.val().description,
+                      link: childSnapshot.val().link,
+                      color: childSnapshot.val().color,
+                    });
+                  });
+                } else {
+                  alert("No links found!!!");
+                }
+              });
+          } else {
+            alert("User does not exist!!!");
+          }
+        });
     },
 
     signUserUp({ commit }, payload) {
@@ -64,9 +100,10 @@ const store = new Vuex.Store({
         })
         .catch((error) => {
           commit("setLoading", false);
-          console.log(error);
+          alert(error);
         });
     },
+
     signUserIn({ commit }, payload) {
       commit("setLoading", true);
       firebase
@@ -83,7 +120,7 @@ const store = new Vuex.Store({
         })
         .catch((error) => {
           commit("setLoading", false);
-          console.log(error);
+          alert(error);
         });
     },
     autoSignIn({ commit }, payload) {
@@ -98,7 +135,6 @@ const store = new Vuex.Store({
     },
     logout({ commit }) {
       firebase.auth().signOut();
-      //commit('setUser', null)
       commit("setAuth", null);
     },
 

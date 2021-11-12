@@ -60,7 +60,9 @@ export default {
       this.$router.push("/LogIn");
     }
   }, */
-  created() {},
+  created() {
+      this.getData()
+  },
 
   methods: {
     getData() {

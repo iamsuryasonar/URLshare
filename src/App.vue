@@ -27,10 +27,8 @@ export default {
     NavBar,
   },
   computed: {},
-
-  created() {
-
-  },
+  methods: {},
+  created() {},
 };
 </script>
 <style>
@@ -38,6 +36,3 @@ export default {
   transition: top 0.3s;
 }
 </style>
-
-
-

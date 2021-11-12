@@ -146,6 +146,7 @@
             text
             color="#FF521C"
             @click="confirmoverlay = !confirmoverlay"
+            :loading="loading"
           >
             Delete Account
           </v-btn>
@@ -259,15 +260,18 @@ export default {
     },
 
     changeEmail() {
+      this.loading = true;
       this.$store
         .dispatch("changeemail", {
           currentpassword: this.currentPassword,
           newemail: this.newEmail,
         })
         .then((response) => {
+          this.loading = false;
           this.$router.go();
         })
         .catch((response) => {
+          this.loading = false;
           alert("error occured");
           //no error for email already exists (need to be fixed)
           //check if email exist before requesting for email change
@@ -275,25 +279,30 @@ export default {
     },
 
     changePassword() {
+      this.loading = true;
       this.$store
         .dispatch("changepassword", {
           currentpassword: this.currentPassword,
           newpassword: this.newPassword,
         })
         .then((response) => {
+          this.loading = false;
           this.$router.go();
         })
         .catch((response) => {
+          this.loading = false;
           alert("error occured");
         });
     },
 
     confirmDelete() {
+      this.loading = true;
       this.$store.dispatch("deleteaccount", {
         email: this.email,
         currentpassword: this.currentPassword,
       });
-      this.confirmoverlay = false;
+      this.loading = false;
+      // this.confirmoverlay = false;
     },
   },
 };

@@ -9,7 +9,7 @@ import AddLinkView from './views/AddLinkView.vue'
 import DeleteLinkView from "./views/DeleteLinkView";
 import Profile from './views/Profile.vue';
 import LinkView from './views/LinkView.vue'
-import NoLink from './components/NoLink.vue';
+import ForgotPassword from './views/ForgotPassword.vue'
 
 Vue.use(VueRouter);
 
@@ -65,6 +65,17 @@ const router = new VueRouter({
       },
       beforeEnter : guardwhenonline,
     },
+    {
+      path: '/ForgotPassword',
+      component: ForgotPassword,
+      name: "ForgotPassword",
+      title: "Forgot Password",
+      meta: {
+        authRequired: false,
+      },
+      beforeEnter : guardwhenonline,
+    },
+    
     {
       path: '/Register',
       component: Register,
