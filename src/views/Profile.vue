@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" color="#26c6da" dark max-width="400">
+  <!-- <v-card class="mx-auto" color="#26c6da" dark max-width="400">
     <v-card-title>
       <v-col cols="12">
         <span class="title font-weight-light">Profile</span>
@@ -196,34 +196,158 @@
         </v-row>
       </v-container>
     </v-overlay>
-  </v-card>
+  </v-card> -->
+
+  <div>
+    <div class="wrapper" v-click-outside="onClickOutside">
+      <p class="title">Profile</p>
+      <div class="container">
+        <div class="iconandusername">
+          <img class="" alt="" :src="url" />
+          <p>{{ username }}</p>
+        </div>
+        <div class="emailandediticon">
+          <p>{{ email }}</p>
+          <a @click="emailoverlay = !emailoverlay">
+            <i class="fas fa-edit"></i
+          ></a>
+        </div>
+        <div class="passwordandediticon">
+          <p>Password</p>
+          <a @click="passwordoverlay = !passwordoverlay">
+            <i class="fas fa-edit"></i
+          ></a>
+        </div>
+        <button @click="logOut">Sign Out</button>
+        <button
+          class="buttondelete"
+          @click="confirmdeleteaccountoverlay = !confirmdeleteaccountoverlay"
+        >
+          Delete Account
+        </button>
+      </div>
+
+      <div class="overlay" v-show="emailoverlay">
+        <ul>
+          <li class="list_items">
+            <input
+              placeholder="New Email"
+              v-model="newEmail"
+              type="email"
+              name="Email"
+              autocomplete="off"
+              required
+            />
+          </li>
+          <li class="list_items">
+            <input
+              placeholder="Password"
+              v-model="currentPassword"
+              type="password"
+              name="Password"
+              autocomplete="off"
+              required
+            />
+          </li>
+          <button @click="changeEmail">Update Email</button>
+        </ul>
+      </div>
+      <div class="overlay" v-show="passwordoverlay">
+        <ul>
+          <li class="list_items">
+            <input
+              placeholder="Current Password"
+              v-model="currentPassword"
+              type="password"
+              name="Password"
+              autocomplete="off"
+              required
+            />
+          </li>
+          <li class="list_items">
+            <input
+              placeholder="New Password"
+              v-model="newPassword"
+              type="password"
+              name="Password"
+              autocomplete="off"
+              required
+            />
+          </li>
+          <button @click="changePassword">Update Password</button>
+        </ul>
+      </div>
+      <div class="overlay" v-show="confirmdeleteaccountoverlay">
+        <ul>
+          <li class="list_items">
+            <input
+              placeholder="Password"
+              v-model="currentPassword"
+              type="password"
+              name="Password"
+              autocomplete="off"
+              required
+            />
+          </li>
+          <li class="list_items">
+            <div class="confirmandrejectbuttons">
+              <button @click="confirmDelete">Confirm Delete</button>
+              <button
+                @click="
+                  confirmdeleteaccountoverlay = !confirmdeleteaccountoverlay
+                "
+              >
+                Cancel
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import firebase from "firebase";
-import store from "../store/store";
+import Vue from "vue";
+
+Vue.directive("click-outside", {
+  bind(el, binding, vnode) {
+    el.clickOutsideEvent = (event) => {
+      if (!(el === event.target || el.contains(event.target))) {
+        vnode.context[binding.expression](event);
+      }
+    };
+    document.body.addEventListener("click", el.clickOutsideEvent);
+  },
+  unbind(el) {
+    document.body.removeEventListener("click", el.clickOutsideEvent);
+  },
+});
+
 export default {
   data() {
     return {
       url:
         "https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light",
       emailoverlay: false,
-      passoverlay: false,
-      confirmoverlay: false,
-      loading: false,
-      absolute: true,
-      opacity: 1,
+      passwordoverlay: false,
+      confirmdeleteaccountoverlay: false,
       newEmail: "",
       currentPassword: "",
       newPassword: "",
-      Password: "",
       username: "",
       email: "",
+      // passoverlay: false,
+      // confirmoverlay: false,
+      // loading: false,
+      // absolute: true,
+      // opacity: 1,
+      // overlay: false,
     };
   },
 
-  computed: {
-  },
+  computed: {},
   mounted() {},
   created() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -249,7 +373,7 @@ export default {
   methods: {
     onClickOutside() {
       this.emailoverlay = false;
-      this.passoverlay = false;
+      this.passwordoverlay = false;
       this.confirmoverlay = false;
       this.usernameoverlay = false;
     },
@@ -258,7 +382,6 @@ export default {
       this.$store.dispatch("logout");
       this.$router.go();
     },
-
     changeEmail() {
       this.loading = true;
       this.$store
@@ -308,7 +431,144 @@ export default {
 };
 </script>
 <style scoped>
-.v-color-picker {
-  background-color: #ffffff00;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
+html {
+  background-color: #151515;
+}
+
+*,
+p {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  position: relative;
+  width: 50%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.title {
+  margin: auto;
+}
+img {
+  width: 50px;
+}
+.iconandusername {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.emailandediticon {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+.passwordandediticon {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 8px 20px;
+  background-color: rgb(45, 209, 154);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+}
+button:hover {
+  background-color: rgb(7, 146, 100);
+}
+.buttondelete {
+  color: indianred;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: red;
+}
+ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0%;
+}
+li,
+button {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: aliceblue;
+  text-decoration: none;
+}
+p {
+  font-size: 16px;
+}
+.list_items {
+  list-style: none;
+}
+input {
+  border: 1px solid rgb(45, 209, 154);
+  border-radius: 0.25rem;
+  padding: 0.5em 0.75em;
+  color: white;
+  background-color: #151515;
+  width: 100%;
+}
+input::placeholder {
+  opacity: 0.56;
+  color: white;
+}
+
+input:hover {
+  border-color: yellow;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid transparent;
+  box-shadow: 0px 0px 1px 1px yellow;
+}
+li {
+  margin: 2%;
+  width: 50%;
+}
+
+.confirmandrejectbuttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 700px) {
+  .wrapper {
+    height: 100%;
+    width: auto;
+    padding: 10%;
+    margin: auto;
+  }
 }
 </style>
