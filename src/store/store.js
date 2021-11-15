@@ -10,13 +10,17 @@ const store = new Vuex.Store({
     auth: false,
     loading: false,
     links: [],
+    snackbarcontent: {
+      status: false,
+      content: "",
+      color: "",
+    },
   },
   mutations: {
     setUser(state, payload) {
       state.user = payload;
     },
     setAuth(state, payload) {
-      // state.auth = payload
       if (payload != null) {
         state.auth = true;
       } else {
@@ -29,10 +33,24 @@ const store = new Vuex.Store({
     setLinks(state, payload) {
       state.links = payload;
     },
+    setSnackbar(state, payload) {
+      state.snackbarcontent.content = payload.content;
+      state.snackbarcontent.color = payload.color;
+      state.snackbarcontent.status = payload.status;
+
+      setTimeout(() => {
+        state.snackbarcontent.status= false
+        state.snackbarcontent.content= ""
+        state.snackbarcontent.color= ""
+      }, 1500);
+    },
   },
   actions: {
     actionauthenticated({ commit }, payload) {
       commit("setAuth", payload);
+    },
+    actionSnackbar({ commit }, payload) {
+      commit("setSnackbar", payload);
     },
 
     getLinks({ commit }, payload) {
@@ -99,8 +117,11 @@ const store = new Vuex.Store({
             });
         })
         .catch((error) => {
-          commit("setLoading", false);
-          alert(error);
+          commit("setSnackbar", {
+            status: true,
+            content: error,
+            color: "#f69797ef",
+          });
         });
     },
 
@@ -119,8 +140,11 @@ const store = new Vuex.Store({
           commit("setUser", newUser);
         })
         .catch((error) => {
-          commit("setLoading", false);
-          alert(error);
+          commit("setSnackbar", {
+            status: true,
+            content: error,
+            color: "#f69797ef",
+          });
         });
     },
     autoSignIn({ commit }, payload) {
@@ -152,10 +176,18 @@ const store = new Vuex.Store({
             user
               .updatePassword(payload.newpassword)
               .then(() => {
-                resolve();
+                commit("actionSnackbar", {
+                  status: true,
+                  content: "Password Updated",
+                  color: "#d0fba7",
+                });
               })
               .catch((error) => {
-                reject(error);
+                commit("setSnackbar", {
+                  status: true,
+                  content: error,
+                  color: "#f69797ef",
+                });
               });
           });
         //not sure if it gonna work
@@ -227,6 +259,9 @@ const store = new Vuex.Store({
     },
     loading(state) {
       return state.loading;
+    },
+    snackbar(state) {
+      return state.snackbarcontent;
     },
   },
 });

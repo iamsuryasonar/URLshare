@@ -1,79 +1,7 @@
 <template>
-  <!-- <div>
-    <div class="text-center">
-      <v-snackbar color="#182B6F" v-model="snackbar" :timeout="timeout">
-        Link Added!
-      </v-snackbar>
-    </div>
-
-    <v-card height="0" max-width="400" class="mx-auto">
-      <v-container>
-        <v-row dense>
-          <v-col class="collection mt-10" cols="12">
-            <v-card color="green" dark>
-              <v-card-title class="ml-15">Add Link</v-card-title>
-              <div class="mt-3 d-flex flex-no-wrap justify-space-around">
-                <div>
-                  <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-text-field
-                      class="mt-0 ml-3"
-                      rounded
-                      v-model="items.title"
-                      :rules="titleRules"
-                      required
-                      outlined
-                      small
-                      placeholder="Enter Link Title"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mt-0 ml-3"
-                      rounded
-                      v-model="items.description"
-                      :rules="descriptionRules"
-                      required
-                      outlined
-                      small
-                      placeholder="Enter Description"
-                    >
-                    </v-text-field>
-
-                    <v-text-field
-                      class="ml-3 mt-0"
-                      outlined
-                      v-model="items.link"
-                      :rules="urlRules"
-                      required
-                      rounded
-                      placeholder="Enter Link"
-                      target="_blank"
-                    >
-                    </v-text-field>
-                  </v-form>
-                  <v-btn
-                    block
-                    large
-                    class="ml-3 mt-4 mb-8"
-                    :disabled="isDisabled"
-                    :loading="loading"
-                    @click="addLink"
-                    outlined
-                    rounded
-                    text
-                  >
-                    Linkify
-                  </v-btn>
-                </div>
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card>
-  </div> -->
-
   <div>
     <div class="wrapper">
+      <snack-bar></snack-bar>
       <ul>
         <li class="list_items">
           <input
@@ -87,12 +15,13 @@
         </li>
         <li class="list_items">
           <textarea
-          rows="5"
-          placeholder="Description" 
-          v-model="items.description"
-          autocomplete="off"
-          name="Description"
-          required>
+            rows="5"
+            placeholder="Description"
+            v-model="items.description"
+            autocomplete="off"
+            name="Description"
+            required
+          >
           </textarea>
         </li>
         <li class="list_items">
@@ -106,9 +35,8 @@
           />
         </li>
         <li class="list_items">
-          <button 
-          @click="addLink">
-          Save
+          <button @click="addLink">
+            Save
           </button>
         </li>
       </ul>
@@ -118,11 +46,13 @@
 
 <script>
 import firebase from "firebase";
+import SnackBar from "../components/snackbar.vue";
 export default {
+  components: {
+    SnackBar,
+  },
   data() {
     return {
-      //snackbar: false,
-      timeout: 2000,
       overlay: false,
       valid: true,
       loading: false,
@@ -156,8 +86,6 @@ export default {
 
   methods: {
     addLink() {
-      // this.$refs.form.validate();
-      this.loading = true;
       var uniqueUrlKey = firebase
         .database()
         .ref()
@@ -170,7 +98,7 @@ export default {
         this.items.link = this.items.link;
       } else if (this.items.link.substr(0, 7) === "http://") {
         this.items.link = "https://" + this.items.link.replace("http://", "");
-      }else if (this.items.link.substr(0, 3) === "www") {
+      } else if (this.items.link.substr(0, 3) === "www") {
         this.items.link = "https://" + this.items.link;
       }
 
@@ -188,17 +116,19 @@ export default {
           color: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
         })
         .then(() => {
-          alert("link added")
-          this.loading = false;
-          // this.$refs.form.reset();
-          // this.snackbar = true;
-          this.loading = false;
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "Link Added",
+            color: "#d0fba7",
+          });
         })
         .catch((error) => {
-          this.loading = false;
-          alert(error.message);
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: error.message,
+            color: "#f69797ef",
+          });
         });
-      // this.$refs.form.reset();
     },
   },
 };
@@ -219,13 +149,8 @@ html {
 
 .wrapper {
   width: 70%;
-  height: auto;
   margin: auto;
-  /* position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -242,17 +167,18 @@ button {
 .list_items {
   list-style: none;
 }
-input, textarea {
+input,
+textarea {
   border: 1px solid rgb(45, 209, 154);
   border-radius: 0.25rem;
   padding: 0.5em 0.75em;
-  color: white;
-  background-color: #151515;
+  color: black;
+  background-color: transparent;
   width: 100%;
 }
 input::placeholder {
   opacity: 0.56;
-  color: white;
+  color: black;
 }
 
 input:hover {
@@ -288,7 +214,7 @@ ul {
 }
 li {
   margin: 2%;
-  width: 50%;
+  width: 100%;
 }
 @media only screen and (max-width: 700px) {
   .wrapper {

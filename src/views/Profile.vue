@@ -1,207 +1,9 @@
 <template>
-  <!-- <v-card class="mx-auto" color="#26c6da" dark max-width="400">
-    <v-card-title>
-      <v-col cols="12">
-        <span class="title font-weight-light">Profile</span>
-      </v-col>
-    </v-card-title>
-    <v-col cols="12">
-      <v-card-actions>
-        <v-list-item class="grow">
-          <v-list-item-avatar color="grey darken-3">
-            <v-img class="elevation-6" alt="" :src="url"></v-img>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title class="headline font-weight-bold">{{
-              username
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-card-actions>
-    </v-col>
-
-    <v-card-actions>
-      <v-list-item class="grow">
-        <v-col cols="9">
-          <v-list-item-content>
-            <v-list-item-title class="title font-weight-light">{{
-              email
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-col>
-
-        <v-row align="center" justify="end">
-          <v-col cols="9">
-            <v-btn fab icon right @click="emailoverlay = !emailoverlay">
-              <v-icon class="mr-1"> mdi-pen </v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-list-item>
-    </v-card-actions>
-
-    <v-overlay
-      color="#26c6da"
-      :absolute="absolute"
-      :opacity="opacity"
-      :value="emailoverlay"
-    >
-      <v-container v-click-outside="onClickOutside">
-        <v-text-field
-          v-model="newEmail"
-          label="Enter New Email"
-          required
-          class="title"
-        ></v-text-field>
-        <v-text-field
-          v-model="currentPassword"
-          label="Enter Password"
-          required
-          class="title"
-        ></v-text-field>
-
-        <v-btn color="orange lighten-2" @click="changeEmail" :loading="loading">
-          Update Email
-        </v-btn>
-      </v-container>
-    </v-overlay>
-
-    <v-card-actions>
-      <v-list-item class="grow">
-        <v-col cols="9">
-          <v-list-item-content>
-            <v-list-item-title class="title font-weight-light"
-              >Password</v-list-item-title
-            >
-          </v-list-item-content>
-        </v-col>
-
-        <v-row align="center" justify="end">
-          <v-col cols="9">
-            <v-btn fab icon right @click="passoverlay = !passoverlay">
-              <v-icon class="mr-1"> mdi-pen </v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-list-item>
-    </v-card-actions>
-
-    <v-overlay
-      color="#26c6da"
-      :absolute="absolute"
-      :opacity="opacity"
-      :value="passoverlay"
-    >
-      <v-container v-click-outside="onClickOutside">
-        <v-text-field
-          v-model="currentPassword"
-          label="Enter Current Password"
-          required
-          class="title"
-        ></v-text-field>
-        <v-text-field
-          v-model="newPassword"
-          label="Enter New Password"
-          required
-          class="title"
-        ></v-text-field>
-
-        <v-btn
-          color="orange lighten-2"
-          @click="changePassword"
-          :loading="loading"
-        >
-          Update Password
-        </v-btn>
-      </v-container>
-    </v-overlay>
-
-    <v-card-actions>
-      <v-list-item class="grow">
-        <v-list-item-content>
-          <v-btn
-            block
-            small
-            class="mx-auto"
-            outlined
-            rounded
-            text
-            v-on:click="logOut"
-          >
-            Sign Out
-          </v-btn>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card-actions>
-
-    <v-card-actions>
-      <v-list-item class="grow">
-        <v-list-item-content>
-          <v-btn
-            block
-            small
-            class="mx-auto"
-            rounded
-            text
-            color="#FF521C"
-            @click="confirmoverlay = !confirmoverlay"
-            :loading="loading"
-          >
-            Delete Account
-          </v-btn>
-        </v-list-item-content>
-      </v-list-item>
-    </v-card-actions>
-    <v-overlay
-      color="#26c6da"
-      :absolute="absolute"
-      :opacity="opacity"
-      :value="confirmoverlay"
-    >
-      <v-container v-click-outside="onClickOutside">
-        <v-col cols="12" align="center" no-gutter>
-          <v-text-field
-            v-model="currentPassword"
-            label="Enter Current Password"
-            required
-            class="title"
-          ></v-text-field>
-        </v-col>
-        <v-row align="center" justify="end">
-          <v-col cols="6" align="center">
-            <v-btn
-              text
-              outlined
-              rounded
-              color=" lighten-2"
-              @click="confirmDelete"
-              :loading="loading"
-            >
-              <v-icon class="mr-1"> mdi-delete </v-icon>
-            </v-btn>
-          </v-col>
-          <v-col cols="6" align="center">
-            <v-btn
-              text
-              outlined
-              rounded
-              color=" lighten-2"
-              @click="confirmoverlay = !confirmoverlay"
-              :loading="loading"
-            >
-              <v-icon class="mr-1"> mdi-cancel </v-icon>
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-overlay>
-  </v-card> -->
-
-  <div>
-    <div class="wrapper" v-click-outside="onClickOutside">
-      <p class="title">Profile</p>
+  <div class="wrapper">
+    <snack-bar></snack-bar>
+    <div class="overlaycontainer" v-click-outside="onClickOutside">
       <div class="container">
+        <p class="title">Profile</p>
         <div class="iconandusername">
           <img class="" alt="" :src="url" />
           <p>{{ username }}</p>
@@ -310,6 +112,7 @@
 <script>
 import firebase from "firebase";
 import Vue from "vue";
+import SnackBar from "../components/snackbar.vue";
 
 Vue.directive("click-outside", {
   bind(el, binding, vnode) {
@@ -326,6 +129,9 @@ Vue.directive("click-outside", {
 });
 
 export default {
+  components: {
+    SnackBar,
+  },
   data() {
     return {
       url:
@@ -338,39 +144,37 @@ export default {
       newPassword: "",
       username: "",
       email: "",
-      // passoverlay: false,
-      // confirmoverlay: false,
-      // loading: false,
-      // absolute: true,
-      // opacity: 1,
-      // overlay: false,
     };
   },
 
   computed: {},
   mounted() {},
   created() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        let userId = firebase.auth().currentUser.uid;
-        user.providerData.forEach((profile) => {
-          this.email = profile.email;
-        });
-      }
-    });
-
+    this.retrieveEmail();
     //get username
-    firebase
-      .database()
-      .ref("users/" + firebase.auth().currentUser.uid)
-      .on("value", (snapshot) => {
-        if (snapshot != null) {
-          this.username = snapshot.val().username;
-        }
-      });
+    this.retrieveUsername();
   },
 
   methods: {
+    retrieveEmail() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          user.providerData.forEach((profile) => {
+            this.email = profile.email;
+          });
+        }
+      });
+    },
+    retrieveUsername() {
+      firebase
+        .database()
+        .ref("users/" + firebase.auth().currentUser.uid)
+        .on("value", (snapshot) => {
+          if (snapshot != null) {
+            this.username = snapshot.val().username;
+          }
+        });
+    },
     onClickOutside() {
       this.emailoverlay = false;
       this.passwordoverlay = false;
@@ -383,49 +187,60 @@ export default {
       this.$router.go();
     },
     changeEmail() {
-      this.loading = true;
       this.$store
         .dispatch("changeemail", {
           currentpassword: this.currentPassword,
           newemail: this.newEmail,
         })
-        .then((response) => {
-          this.loading = false;
-          this.$router.go();
+        .then(() => {
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "Email Updated",
+            color: "#d0fba7",
+          });
+          this.retrieveEmail();
+          this.emailoverlay = false;
         })
-        .catch((response) => {
-          this.loading = false;
-          alert("error occured");
+        .catch((error) => {
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "An error occured",
+            color: "#f69797ef",
+          });
           //no error for email already exists (need to be fixed)
           //check if email exist before requesting for email change
         });
     },
 
     changePassword() {
-      this.loading = true;
       this.$store
         .dispatch("changepassword", {
           currentpassword: this.currentPassword,
           newpassword: this.newPassword,
         })
-        .then((response) => {
-          this.loading = false;
-          this.$router.go();
+        .then(() => {
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "Password Updated",
+            color: "#d0fba7",
+          });
+          this.passwordoverlay = false;
         })
-        .catch((response) => {
-          this.loading = false;
-          alert("error occured");
+        .catch((error) => {
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "An error occured",
+            color: "#f69797ef",
+          });
         });
     },
 
     confirmDelete() {
-      this.loading = true;
       this.$store.dispatch("deleteaccount", {
         email: this.email,
         currentpassword: this.currentPassword,
       });
-      this.loading = false;
-      // this.confirmoverlay = false;
+      this.$router.go();
     },
   },
 };
@@ -445,12 +260,15 @@ p {
 }
 
 .wrapper {
-  position: relative;
-  width: 50%;
+  width: 70%;
+  height: 100vh;
   margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.overlaycontainer {
+  position: relative;
 }
 .container {
   display: flex;
@@ -504,16 +322,19 @@ button:hover {
 .overlay {
   position: absolute;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  margin: auto;
-  background-color: red;
+  background: linear-gradient(to right, #8e9eab, #eef2f3);
 }
 ul {
+  width: 90%;
+  height: 100%;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 0%;
 }
 li,
@@ -534,13 +355,13 @@ input {
   border: 1px solid rgb(45, 209, 154);
   border-radius: 0.25rem;
   padding: 0.5em 0.75em;
-  color: white;
-  background-color: #151515;
+  color: black;
+  background-color: transparent;
   width: 100%;
 }
 input::placeholder {
   opacity: 0.56;
-  color: white;
+  color: black;
 }
 
 input:hover {
@@ -554,7 +375,7 @@ input:focus {
 }
 li {
   margin: 2%;
-  width: 50%;
+  width: 100%;
 }
 
 .confirmandrejectbuttons {

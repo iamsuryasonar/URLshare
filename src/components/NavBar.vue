@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <v-app-bar light elevate-on-scroll absolute color="transparent">
       <v-toolbar-title class="title font-weight-light"
         >Link Share</v-toolbar-title
@@ -46,12 +46,49 @@
         </v-list-item>
       </v-list>
     </v-app-bar>
+  </div> -->
+  <div class="container">
+    <div class="logotitle">
+      <p>LinkShare</p>
+    </div>
+    <div class="searchandnavigationitems">
+      <div class="searchinputandicon">
+        <input
+          placeholder="Username"
+          type="text"
+          name="Username"
+          autocomplete="off"
+          required
+          v-model="username"
+        />
+        <i class="fas fa-search" @click="searchUsername"></i>
+      </div>
+      <div class="navigation-items">
+        <div v-if="isonline">
+          <a
+            v-for="item in onlinenavitem"
+            :key="item.icon"
+            :href="item.link"
+            :title="item.title"
+            >{{ item.text }}</a
+          >
+        </div>
+        <div v-if="isoffline">
+          <a
+            v-for="item in offlinenavitem"
+            :key="item.icon"
+            :href="item.link"
+            :title="item.title"
+            >{{ item.text }}</a
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-import { app } from "../main";
 export default {
   name: "NewNav",
 
@@ -109,7 +146,7 @@ export default {
         this.$router
           .replace({ name: "LinkView", params: { username: this.username } })
           .catch((error) => {
-            console.log(error.name);
+            alert(error.name);
           });
       } else {
         this.$store.dispatch("getLinks", {
@@ -141,8 +178,72 @@ export default {
   },
 };
 </script>
-<style>
-.app-bar {
-  transition: top 0.3s;
+<style scoped>
+.container {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logotitle {
+  margin-left: 20px;
+  font-size: 30px;
+}
+.searchinputandicon{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+input {
+  border: 1px solid rgb(45, 209, 154);
+  border-radius: 0.25rem;
+  padding: 0.5em 0.75em;
+  color: white;
+  background-color: transparent;
+  width: 100%;
+}
+input::placeholder {
+  opacity: 0.56;
+  color: black;
+}
+
+input:hover {
+  border-color: yellow;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid transparent;
+  box-shadow: 0px 0px 1px 1px yellow;
+}
+
+i{
+  margin-left: 10px;
+}
+.searchandnavigationitems {
+  margin-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.searchandnavigationitems a {
+  margin: auto 20px;
+}
+a {
+  cursor: pointer;
+  color: black;
+  text-decoration-line: none;
+}
+a:hover,
+i:hover {
+  color: red;
+}
+i {
+  cursor: pointer;
+}
+.searchinputandicon {
+}
+.navigation-items {
 }
 </style>

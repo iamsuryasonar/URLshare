@@ -1,49 +1,7 @@
 <template>
-  <!-- <div>
-    <v-card height="0" max-width="400" class="mx-auto">
-      <v-container>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            label="E-mail"
-            required
-          ></v-text-field>
-          <v-text-field
-            :rules="passwordRules"
-            label="Password"
-            required
-            v-model="password"
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="show ? 'text' : 'password'"
-            name="password"
-            hint="At least 8 characters"
-            counter
-            @click:append="show = !show"
-          ></v-text-field>
-        </v-form>
-      </v-container>
-      <v-container>
-        <v-btn
-          :disabled="isDisabled"
-          color="success"
-          class="mr-4"
-          :loading="loading"
-          @click="validate"
-          
-        >
-          Log In
-        </v-btn>
-        <p class="forgot-password text-right">
-          Forgot Password
-          <router-link to="/ForgotPassword">Reset?</router-link>
-        </p>
-      </v-container>
-    </v-card>
-  </div> -->
-  
-   <div>
-    <div class="wrapper">
+<div class="wrapper" >
+  <snack-bar></snack-bar>
+    <div class="overlaycontainer" v-click-outside="onClickOutside">
       <div class="container">
         <ul>
           <li class="list_items">
@@ -70,8 +28,30 @@
             <div class="loginandforgotpassword">
               <button @click="validate">Log In</button>
               <p href="#">
-                <router-link to="/ForgotPassword">Reset password?</router-link>
+                <a @click="forgotpasswordoverlay = !forgotpasswordoverlay"
+                  >Reset password?</a
+                >
               </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="forgotpasswordoverlay" v-show="forgotpasswordoverlay">
+        <ul>
+          <li class="list_items">
+            <input
+              placeholder="Email"
+              v-model="email"
+              type="email"
+              name="Email"
+              autocomplete="off"
+              required
+            />
+            <div class="overlaybuttons">
+              <button @click="forgotpasswordoverlay = !forgotpasswordoverlay">
+                Cancel
+              </button>
+              <button @click="reset">Send Email</button>
             </div>
           </li>
         </ul>
@@ -82,13 +62,33 @@
 
 <script>
 import firebase from "firebase";
+import Vue from "vue";
+import SnackBar from "../components/snackbar.vue"
+
+Vue.directive("click-outside", {
+  bind(el, binding, vnode) {
+    el.clickOutsideEvent = (event) => {
+      if (!(el === event.target || el.contains(event.target))) {
+        vnode.context[binding.expression](event);
+      }
+    };
+    document.body.addEventListener("click", el.clickOutsideEvent);
+  },
+  unbind(el) {
+    document.body.removeEventListener("click", el.clickOutsideEvent);
+  },
+});
 
 export default {
+  components:{
+    SnackBar,
+  },
   data: () => ({
     show: false,
     loading: false,
     valid: false,
     password: "",
+    forgotpasswordoverlay: false,
     passwordRules: [
       (v) => !!v || "Password is required",
       (v) =>
@@ -102,39 +102,60 @@ export default {
     error: null,
   }),
 
-  // beforeCreated() {
-  //   if(this.$store.state.auth){
-  //     this.$router.push('./Profile')
-  //   }
-  // },
   computed: {
     isDisabled() {
-      if(this.email!= "" && this.password != ""){
-        return false
-      }else{
-        return true
+      if (this.email != "" && this.password != "") {
+        return false;
+      } else {
+        return true;
       }
-      },
+    },
 
     user() {
       return this.$store.getters.user;
     },
   },
 
-
   methods: {
     validate() {
-      this.loading = true;
-      // this.$refs.form.validate();
-
       this.$store.dispatch("signUserIn", {
         email: this.email,
         password: this.password,
       });
-      console.log("logged in!!!")
-      this.loading = false;
-      //this.$router.push("/Profile"); //this needs to be fixed
-      // this.$refs.form.reset();
+    },
+
+    onClickOutside() {
+      this.forgotpasswordoverlay = false;
+    },
+    reset() {
+      if (!this.email) {
+        this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "please enter valid email",
+            color: "#f69797ef",
+          });
+        return;
+      }
+      this.error = null;
+      this.emailSending = true;
+      firebase
+        .auth()
+        .sendPasswordResetEmail(this.email)
+        .then(() => {
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "Email sent, Please check your email.",
+            color: "#d0fba7",
+          });
+          this.forgotpasswordoverlay = false;
+        })
+        .catch((error) => {
+          this.$store.dispatch("actionSnackbar", {
+            status: true,
+            content: "An error occured",
+            color: "#f69797ef",
+          });
+        });
     },
   },
 };
@@ -154,16 +175,14 @@ html {
 
 .wrapper {
   width: 70%;
-  height: auto;
   margin: auto;
-  /* position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.overlaycontainer {
+  position: relative;
 }
 .container {
   display: flex;
@@ -194,13 +213,13 @@ input {
   border: 1px solid rgb(45, 209, 154);
   border-radius: 0.25rem;
   padding: 0.5em 0.75em;
-  color: white;
-  background-color: #151515;
+  color: black;
+  background-color: transparent;
   width: 100%;
 }
 input::placeholder {
   opacity: 0.56;
-  color: white;
+  color: black;
 }
 
 input:hover {
@@ -235,7 +254,38 @@ ul {
 }
 li {
   margin: 2%;
-  width: 50%;
+  width: 100%;
+}
+a {
+  cursor: pointer;
+  text-decoration-line: none;
+  color: black;
+  font-size: 14px;
+}
+a:hover {
+  color: red;
+}
+.forgotpasswordoverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to right, #8e9eab, #eef2f3);
+}
+.forgotpasswordoverlay ul {
+  width: 90%;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0%;
+}
+.overlaybuttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 @media only screen and (max-width: 700px) {
   .wrapper {

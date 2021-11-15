@@ -1,48 +1,5 @@
 <template>
-  <!-- <div>
-    <v-row class="text-center">
-      <v-col cols="12">
-    <v-card height="0" max-width="400" class="mx-auto">
-      <v-form class="mt-10" ref="form" v-model="valid" lazy-validation>
-        <v-text-field
-          v-model="username"
-          :rules="usernameRules"
-          label="Username"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          v-model="password"
-          counter
-          :rules="passwordRules"
-          label="Password"
-          required
-          hint="At least 8 characters"
-        ></v-text-field>
-
-        <v-btn
-          :disabled="isDisabled"
-          color="success"
-          class="mr-4"
-          @click="register"
-          :loading="loading"
-        >
-          Register
-        </v-btn>
-      </v-form>
-    </v-card>
-      </v-col>
-    </v-row>
-  </div> -->
-
-   <div>
+<div>
     <div class="wrapper">
       <div class="container">
         <ul>
@@ -113,19 +70,7 @@ export default {
     error: null,
   }),
 
-  // beforeCreate() {
-  //   if(this.$store.state.auth){
-  //     this.$router.push('./Profile')
-  //   }
-  // },
-
   computed: {
-    /*  user() {
-      return this.$store.getters.user;
-    },
-    loading() {
-      return this.$store.getters.loading;
-    }, */
     isDisabled() {
       if (this.username != "" && this.email != "" && this.password != "") {
         return false;
@@ -145,7 +90,6 @@ export default {
 
   methods: {
     register() {
-      // this.$refs.form.validate();
       this.loading = true;
       firebase
         .database()
@@ -183,13 +127,8 @@ html {
 
 .wrapper {
   width: 70%;
-  height: auto;
   margin: auto;
-  /* position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -214,8 +153,12 @@ button {
   text-decoration: none;
 }
 a {
-  text-decoration: none;
+  text-decoration-line: none;
+  color: black;
   font-size: 14px;
+}
+a:hover{
+  color: red;
 }
 .list_items {
   list-style: none;
@@ -224,13 +167,13 @@ input {
   border: 1px solid rgb(45, 209, 154);
   border-radius: 0.25rem;
   padding: 0.5em 0.75em;
-  color: white;
-  background-color: #151515;
+  color: black;
+  background-color: transparent;
   width: 100%;
 }
 input::placeholder {
   opacity: 0.56;
-  color: white;
+  color: black;
 }
 
 input:hover {
@@ -265,7 +208,7 @@ ul {
 }
 li {
   margin: 2%;
-  width: 50%;
+  width: 100%;
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
