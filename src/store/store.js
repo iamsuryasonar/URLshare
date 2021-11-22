@@ -8,12 +8,11 @@ const store = new Vuex.Store({
   state: {
     user: {},
     auth: false,
-    loading: false,
     links: [],
-    snackbarcontent: {
-      status: false,
-      content: "",
-      color: "",
+    loading: false,
+    snackbar: {
+      content: null,
+      type: "",
     },
   },
   mutations: {
@@ -27,33 +26,32 @@ const store = new Vuex.Store({
         state.auth = false;
       }
     },
-    setLoading(state, payload) {
-      state.loading = payload;
-    },
     setLinks(state, payload) {
       state.links = payload;
     },
+    setLoading(state, payload) {
+      state.loading = payload;
+    },
     setSnackbar(state, payload) {
-      state.snackbarcontent.content = payload.content;
-      state.snackbarcontent.color = payload.color;
-      state.snackbarcontent.status = payload.status;
-
+      state.snackbar = payload;
       setTimeout(() => {
-        state.snackbarcontent.status= false
-        state.snackbarcontent.content= ""
-        state.snackbarcontent.color= ""
-      }, 1500);
+        state.snackbar.content = null;
+      }, 4000);
     },
   },
   actions: {
     actionauthenticated({ commit }, payload) {
       commit("setAuth", payload);
     },
+    actionLoading({ commit }, payload) {
+      commit("setLoading", payload);
+    },
     actionSnackbar({ commit }, payload) {
       commit("setSnackbar", payload);
     },
 
     getLinks({ commit }, payload) {
+      commit("setLoading", true);
       firebase
         .database()
         .ref("usernames/" + payload.username + "/userid/")
@@ -74,13 +72,19 @@ const store = new Vuex.Store({
                       link: childSnapshot.val().link,
                       color: childSnapshot.val().color,
                     });
+                    commit("setLoading", false);
                   });
                 } else {
+                  commit("setLoading", false);
                   alert("No links found!!!");
                 }
               });
           } else {
-            alert("User does not exist!!!");
+            commit("setLoading", false);
+            commit("setSnackbar", {
+              content: "User does not exist!!!",
+              type: "error",
+            });
           }
         });
     },
@@ -91,7 +95,6 @@ const store = new Vuex.Store({
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
-          commit("setLoading", false);
           const newUser = {
             id: user.uid,
             name: user.displayName,
@@ -115,12 +118,18 @@ const store = new Vuex.Store({
             .set({
               username: payload.username,
             });
+
+          commit("setLoading", false);
+          commit("setSnackbar", {
+            content: "User registered",
+            type: "success",
+          });
         })
         .catch((error) => {
+          commit("setLoading", false);
           commit("setSnackbar", {
-            status: true,
-            content: error,
-            color: "#f69797ef",
+            content: error.message,
+            type: "error",
           });
         });
     },
@@ -131,20 +140,24 @@ const store = new Vuex.Store({
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
-          commit("setLoading", false);
           const newUser = {
             id: user.uid,
             name: user.displayName,
             email: user.email,
           };
+          commit("setLoading", false);
           commit("setUser", newUser);
+          commit("setSnackbar", {
+            content: "User Logged In",
+            type: "success",
+          });
         })
         .catch((error) => {
           commit("setSnackbar", {
-            status: true,
-            content: error,
-            color: "#f69797ef",
+            content: error.message,
+            type: "error",
           });
+          commit("setLoading", false);
         });
     },
     autoSignIn({ commit }, payload) {
@@ -155,76 +168,87 @@ const store = new Vuex.Store({
       //     email: payload.email,
       // })
       commit("setAuth", true);
-      //console.log(payload,"done")
     },
     logout({ commit }) {
+      commit("setLoading", true);
       firebase.auth().signOut();
       commit("setAuth", null);
+      commit("setLoading", false);
     },
 
     changepassword({ commit }, payload) {
+      commit("setLoading", true);
       var user = firebase.auth().currentUser;
-      return new Promise((resolve, reject) => {
-        user
-          .reauthenticateWithCredential(
-            firebase.auth.EmailAuthProvider.credential(
-              user.email,
-              payload.currentpassword
-            )
+      return user
+        .reauthenticateWithCredential(
+          firebase.auth.EmailAuthProvider.credential(
+            user.email,
+            payload.currentpassword
           )
-          .then(() => {
-            user
-              .updatePassword(payload.newpassword)
-              .then(() => {
-                commit("actionSnackbar", {
-                  status: true,
-                  content: "Password Updated",
-                  color: "#d0fba7",
-                });
-              })
-              .catch((error) => {
-                commit("setSnackbar", {
-                  status: true,
-                  content: error,
-                  color: "#f69797ef",
-                });
+        )
+        .then(() => {
+          return user
+            .updatePassword(payload.newpassword)
+            .then(() => {
+              commit("setLoading", false);
+
+              commit("setSnackbar", {
+                content: "Password Updated",
+                type: "success",
               });
-          });
-        //not sure if it gonna work
-        //   .catch((error) => {
-        //     reject(password);
-        //   });
-      });
+            })
+            .catch((error) => {
+              commit("setLoading", false);
+              commit("setSnackbar", {
+                content: error.message,
+                type: "error",
+              });
+            });
+        });
     },
 
     changeemail({ commit }, payload) {
+      commit("setLoading", true);
       var user = firebase.auth().currentUser;
-      return new Promise((resolve, reject) => {
-        user
-          .reauthenticateWithCredential(
-            firebase.auth.EmailAuthProvider.credential(
-              user.email,
-              payload.currentpassword
-            )
+      return user
+        .reauthenticateWithCredential(
+          firebase.auth.EmailAuthProvider.credential(
+            user.email,
+            payload.currentpassword
           )
-          .then(() => {
-            user
-              .updateEmail(payload.newemail)
-              .then(() => {
-                resolve();
-              })
-              .catch((error) => {
-                reject();
+        )
+        .then(() => {
+          return user
+            .updateEmail(payload.newemail)
+            .then(() => {
+              commit("setLoading", false);
+              commit("setSnackbar", {
+                content: "Email Updated",
+                type: "success",
               });
-          })
-          .catch((error) => {
-            reject();
-          });
-      });
+            })
+            .catch((error) => {
+              commit("setLoading", false);
+              commit("setSnackbar", {
+                content: error.message,
+                type: "error",
+              });
+            });
+        });
     },
     deleteaccount({ commit }, payload) {
+      commit("setLoading", true);
       var user = firebase.auth().currentUser;
       const db = firebase.firestore();
+      let value;
+      firebase
+        .database()
+        .ref("users/" + firebase.auth().currentUser.uid)
+        .once("value", (snapshot) => {
+          if (snapshot != null || snapshot.val().username != undefined) {
+            value = snapshot.val().username;
+          }
+        });
       var userId = firebase.auth().currentUser.uid;
       firebase
         .auth()
@@ -237,16 +261,24 @@ const store = new Vuex.Store({
         .then(() => {
           firebase
             .database()
+            .ref("usernames/" + value)
+            .remove();
+        })
+        .then(() => {
+          firebase
+            .database()
             .ref("users/" + firebase.auth().currentUser.uid)
-            .remove()
-            .then(() => {
-              firebase.auth().currentUser.delete(),
-                (this.confirmoverlay = false);
-            })
-            //---------> username also needs to be deleted <-----------
-            .catch((error) => {
-              alert(error.message);
-            });
+            .remove();
+        })
+        .then(() => {
+          firebase.auth().currentUser.delete(), commit("setLoading", false);
+        })
+        .catch((error) => {
+          commit("setLoading", false);
+          commit("setSnackbar", {
+            content: error.message,
+            type: "error",
+          });
         });
     },
   },
@@ -256,12 +288,6 @@ const store = new Vuex.Store({
     },
     auth(state) {
       return state.auth;
-    },
-    loading(state) {
-      return state.loading;
-    },
-    snackbar(state) {
-      return state.snackbarcontent;
     },
   },
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <snack-bar></snack-bar>
+    <Snackbar></Snackbar>
     <div class="overlaycontainer" v-click-outside="onClickOutside">
       <div class="container">
         <p class="title">Profile</p>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="overlay" v-show="emailoverlay">
-        <ul>
+        <ul @keyup.enter="changeEmail">
           <li class="list_items">
             <input
               placeholder="New Email"
@@ -55,7 +55,7 @@
         </ul>
       </div>
       <div class="overlay" v-show="passwordoverlay">
-        <ul>
+        <ul @keyup.enter="changePassword">
           <li class="list_items">
             <input
               placeholder="Current Password"
@@ -112,8 +112,7 @@
 <script>
 import firebase from "firebase";
 import Vue from "vue";
-import SnackBar from "../components/snackbar.vue";
-
+import Snackbar from "../components/Snackbar.vue";
 Vue.directive("click-outside", {
   bind(el, binding, vnode) {
     el.clickOutsideEvent = (event) => {
@@ -130,7 +129,7 @@ Vue.directive("click-outside", {
 
 export default {
   components: {
-    SnackBar,
+    Snackbar,
   },
   data() {
     return {
@@ -151,7 +150,6 @@ export default {
   mounted() {},
   created() {
     this.retrieveEmail();
-    //get username
     this.retrieveUsername();
   },
 
@@ -166,14 +164,19 @@ export default {
       });
     },
     retrieveUsername() {
-      firebase
-        .database()
-        .ref("users/" + firebase.auth().currentUser.uid)
-        .on("value", (snapshot) => {
-          if (snapshot != null) {
-            this.username = snapshot.val().username;
-          }
-        });
+      if (
+        firebase.auth().currentUser.uid != undefined ||
+        firebase.auth().currentUser.uid != null
+      ) {
+        firebase
+          .database()
+          .ref("users/" + firebase.auth().currentUser.uid)
+          .once("value", (snapshot) => {
+            if (snapshot != null || snapshot.val().username != undefined) {
+              this.username = snapshot.val().username;
+            }
+          });
+      }
     },
     onClickOutside() {
       this.emailoverlay = false;
@@ -184,7 +187,6 @@ export default {
 
     logOut() {
       this.$store.dispatch("logout");
-      this.$router.go();
     },
     changeEmail() {
       this.$store
@@ -193,22 +195,17 @@ export default {
           newemail: this.newEmail,
         })
         .then(() => {
-          this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "Email Updated",
-            color: "#d0fba7",
-          });
           this.retrieveEmail();
+          this.newEmail = "";
+          this.currentPassword = "";
           this.emailoverlay = false;
         })
         .catch((error) => {
+          this.$store.dispatch("actionLoading", false);
           this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "An error occured",
-            color: "#f69797ef",
+            content: error.message,
+            type: "error",
           });
-          //no error for email already exists (need to be fixed)
-          //check if email exist before requesting for email change
         });
     },
 
@@ -219,28 +216,33 @@ export default {
           newpassword: this.newPassword,
         })
         .then(() => {
-          this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "Password Updated",
-            color: "#d0fba7",
-          });
+          this.newPassword = "";
+          this.currentPassword = "";
           this.passwordoverlay = false;
         })
         .catch((error) => {
+          this.$store.dispatch("actionLoading", false);
           this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "An error occured",
-            color: "#f69797ef",
+            content: error.message,
+            type: "error",
           });
         });
     },
 
     confirmDelete() {
-      this.$store.dispatch("deleteaccount", {
-        email: this.email,
-        currentpassword: this.currentPassword,
-      });
-      this.$router.go();
+      this.$store
+        .dispatch("deleteaccount", {
+          email: this.email,
+          currentpassword: this.currentPassword,
+        })
+        .catch((error) => {
+          console.log("profile", error.message);
+          this.$store.dispatch("actionLoading", false);
+          this.$store.dispatch("actionSnackbar", {
+            content: error.message,
+            type: "error"
+          });
+        });
     },
   },
 };
@@ -261,7 +263,7 @@ p {
 
 .wrapper {
   width: 70%;
-  height: 100vh;
+  height: 90vh;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -377,6 +379,9 @@ li {
   margin: 2%;
   width: 100%;
 }
+i {
+  cursor: pointer;
+}
 
 .confirmandrejectbuttons {
   display: flex;
@@ -386,7 +391,7 @@ li {
 
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 100%;
+    height: 90vh;
     width: auto;
     padding: 10%;
     margin: auto;

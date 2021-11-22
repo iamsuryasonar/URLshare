@@ -1,9 +1,9 @@
 <template>
-<div class="wrapper" >
-  <snack-bar></snack-bar>
+  <div class="wrapper">
+    <Snackbar></Snackbar>
     <div class="overlaycontainer" v-click-outside="onClickOutside">
       <div class="container">
-        <ul>
+        <ul @keyup.enter="validate">
           <li class="list_items">
             <input
               placeholder="Email"
@@ -37,7 +37,7 @@
         </ul>
       </div>
       <div class="forgotpasswordoverlay" v-show="forgotpasswordoverlay">
-        <ul>
+        <ul @keyup.enter="reset">
           <li class="list_items">
             <input
               placeholder="Email"
@@ -63,7 +63,7 @@
 <script>
 import firebase from "firebase";
 import Vue from "vue";
-import SnackBar from "../components/snackbar.vue"
+import Snackbar from "../components/Snackbar.vue";
 
 Vue.directive("click-outside", {
   bind(el, binding, vnode) {
@@ -80,44 +80,30 @@ Vue.directive("click-outside", {
 });
 
 export default {
-  components:{
-    SnackBar,
+  components: {
+    Snackbar,
   },
   data: () => ({
-    show: false,
-    loading: false,
-    valid: false,
     password: "",
     forgotpasswordoverlay: false,
-    passwordRules: [
-      (v) => !!v || "Password is required",
-      (v) =>
-        (v && v.length <= 20) || "Password must be less than 10 characters",
-    ],
     email: "",
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    error: null,
   }),
 
   computed: {
-    isDisabled() {
-      if (this.email != "" && this.password != "") {
-        return false;
-      } else {
-        return true;
-      }
-    },
-
-    user() {
-      return this.$store.getters.user;
-    },
+    // user() {
+    //   return this.$store.getters.user;
+    // },
   },
 
   methods: {
     validate() {
+      if (!this.email || !this.password) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Both email and password is required",
+          type: "warning",
+        });
+        return;
+      }
       this.$store.dispatch("signUserIn", {
         email: this.email,
         password: this.password,
@@ -130,30 +116,27 @@ export default {
     reset() {
       if (!this.email) {
         this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "please enter valid email",
-            color: "#f69797ef",
+            content: "Enter valid email",
+            type: "warning",
           });
         return;
       }
-      this.error = null;
-      this.emailSending = true;
+
+      //todo: push below function to store
       firebase
         .auth()
         .sendPasswordResetEmail(this.email)
         .then(() => {
-          this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "Email sent, Please check your email.",
-            color: "#d0fba7",
-          });
           this.forgotpasswordoverlay = false;
+          this.$store.dispatch("actionSnackbar", {
+            content: "Email sent",
+            type: "success",
+          });
         })
         .catch((error) => {
           this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "An error occured",
-            color: "#f69797ef",
+            content: error.message,
+            type: "error",
           });
         });
     },
@@ -176,7 +159,7 @@ html {
 .wrapper {
   width: 70%;
   margin: auto;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -289,7 +272,7 @@ a:hover {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 100%;
+    height: 90vh;
     width: auto;
     padding: 10%;
     margin: auto;

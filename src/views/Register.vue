@@ -1,8 +1,9 @@
 <template>
-<div>
+  <div>
     <div class="wrapper">
+      <Snackbar></Snackbar>
       <div class="container">
-        <ul>
+        <ul @keyup.enter="register">
           <li class="list_items">
             <input
               placeholder="Username"
@@ -47,50 +48,23 @@
 
 <script>
 import firebase from "firebase";
-
+import Snackbar from "../components/Snackbar.vue";
 export default {
+  components: {
+    Snackbar,
+  },
   data: () => ({
-    valid: true,
-    loading: false,
     username: "test",
     password: "11111111",
     email: "test@test.com",
-    usernameRules: [(v) => !!v || "Username is required",],
-    
-    passwordRules: [
-      (v) => !!v || "Password is required",
-      (v) =>
-        (v && v.length <= 20) || "Password must be greater than 8 characters",
-    ],
-
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    error: null,
   }),
 
-  computed: {
-    isDisabled() {
-      if (this.username != "" && this.email != "" && this.password != "") {
-        return false;
-      } else {
-        return true;
-      }
-    },
-  },
+  computed: {},
 
-  watch: {
-    user(value) {
-      if (value !== null && value !== undefined) {
-        this.$router.push("/Profile");
-      }
-    },
-  },
+  watch: {},
 
   methods: {
     register() {
-      this.loading = true;
       firebase
         .database()
         .ref("usernames/")
@@ -102,10 +76,11 @@ export default {
               password: this.password,
               username: this.username,
             });
-            this.loading = false;
           } else {
-            this.loading = false;
-            alert("Username already exists!!!");
+            this.$store.dispatch("actionSnackbar", {
+              content: "username already exist",
+              type: "error",
+            });
           }
         });
     },
@@ -128,7 +103,7 @@ html {
 .wrapper {
   width: 70%;
   margin: auto;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -157,7 +132,7 @@ a {
   color: black;
   font-size: 14px;
 }
-a:hover{
+a:hover {
   color: red;
 }
 .list_items {
@@ -212,7 +187,7 @@ li {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 100%;
+    height: 90vh;
     width: auto;
     padding: 10%;
     margin: auto;

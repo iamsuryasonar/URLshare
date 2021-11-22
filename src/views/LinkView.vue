@@ -1,5 +1,6 @@
 <template>
 <div class="main">
+  <Snackbar class="snackbar"></Snackbar>
     <div class="card-wrap" v-for="(item, index) in items" :key="index" @click="clickedlink(item.link)">
       <div class="card-header one">
         <i class="fas fa-code"></i>
@@ -13,7 +14,11 @@
 </template>
 
 <script>
+import Snackbar from "../components/Snackbar.vue";
 export default {
+  components: {
+    Snackbar,
+  },
   data() {
     return {
       items: this.$store.state.links,
@@ -44,6 +49,9 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.snackbar{
+  width: 85%;
 }
 .card-wrap {
   cursor: pointer;

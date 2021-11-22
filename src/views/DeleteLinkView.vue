@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <snack-bar></snack-bar>
+    <Snackbar class="snackbar"></Snackbar>
     <div class="card-wrap" v-for="(item, index) in items" :key="index">
       <div class="card-header one">
         <i class="fas fa-code"></i>
@@ -23,15 +23,15 @@
 
 <script>
 import firebase from "firebase";
-import SnackBar from "../components/snackbar.vue";
-
+import Snackbar from "../components/Snackbar.vue";
 export default {
   components: {
-    SnackBar,
+    Snackbar,
   },
   data() {
     return {
-      items: [],
+      items: this.$store.state.links,
+      username: "",
     };
   },
   created() {
@@ -42,18 +42,13 @@ export default {
     getData() {
       firebase
         .database()
-        .ref("users/" + firebase.auth().currentUser.uid + "/urls/")
+        .ref("users/" + firebase.auth().currentUser.uid)
         .on("value", (snapshot) => {
-          this.items.length = 0;
-          snapshot.forEach((childSnapshot) => {
-            this.items.push({
-              index: childSnapshot.key,
-              title: childSnapshot.val().title,
-              description: childSnapshot.val().description,
-              link: childSnapshot.val().link,
-              color: childSnapshot.val().color,
+          if (snapshot != null) {
+            this.$store.dispatch("getLinks", {
+              username: snapshot.val().username,
             });
-          });
+          }
         });
     },
     clickedlink(link) {
@@ -68,18 +63,16 @@ export default {
         )
         .remove()
         .then(() => {
-          this.getData();
           this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "Link Deleted",
-            color: "#d0fba7",
+            content: "Link deleted",
+            type: "success",
           });
+          this.getData();
         })
         .catch((error) => {
           this.$store.dispatch("actionSnackbar", {
-            status: true,
-            content: "An error occured",
-            color: error.message,
+            content: error.message,
+            type: "error",
           });
         });
     },
@@ -94,6 +87,9 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.snackbar{
+  width: 85%;
 }
 .card-wrap {
   margin: 20px auto;

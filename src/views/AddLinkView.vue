@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="wrapper">
-      <snack-bar></snack-bar>
-      <ul>
+      <Snackbar></Snackbar>
+      <ul @keyup.enter="addLink">
         <li class="list_items">
           <input
             placeholder="Title"
@@ -46,17 +46,14 @@
 
 <script>
 import firebase from "firebase";
-import SnackBar from "../components/snackbar.vue";
+import Snackbar from "../components/Snackbar.vue";
 export default {
   components: {
-    SnackBar,
+    Snackbar,
   },
   data() {
     return {
       overlay: false,
-      valid: true,
-      loading: false,
-
       items: {
         title: "",
         description: "",
@@ -64,9 +61,6 @@ export default {
         icon: "",
         username: "",
       },
-      titleRules: [(v) => !!v || "Title is required"],
-      descriptionRules: [(v) => !!v || "Description is required"],
-      urlRules: [(v) => !!v || "Url is required"],
     };
   },
   computed: {
@@ -116,17 +110,18 @@ export default {
           color: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
         })
         .then(() => {
+          (this.items.title = ""),
+            (this.items.description = ""),
+            (this.items.link = "");
           this.$store.dispatch("actionSnackbar", {
-            status: true,
             content: "Link Added",
-            color: "#d0fba7",
+            type: "success",
           });
         })
         .catch((error) => {
           this.$store.dispatch("actionSnackbar", {
-            status: true,
             content: error.message,
-            color: "#f69797ef",
+            type: "error",
           });
         });
     },
@@ -150,7 +145,7 @@ html {
 .wrapper {
   width: 70%;
   margin: auto;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -218,7 +213,7 @@ li {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 100%;
+    height: 90vh;
     width: auto;
     padding: 10%;
     margin: auto;
@@ -227,72 +222,6 @@ li {
   li {
     margin: 2%;
     width: 100%;
-  }
-}
-
-#snackbar {
-  visibility: hidden;
-  min-width: 250px;
-  margin-left: -125px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 2px;
-  padding: 16px;
-  position: fixed;
-  z-index: 1;
-  left: 50%;
-  bottom: 30px;
-  font-size: 17px;
-}
-
-#snackbar.show {
-  visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
-@-webkit-keyframes fadein {
-  from {
-    bottom: 0;
-    opacity: 0;
-  }
-  to {
-    bottom: 30px;
-    opacity: 1;
-  }
-}
-
-@keyframes fadein {
-  from {
-    bottom: 0;
-    opacity: 0;
-  }
-  to {
-    bottom: 30px;
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes fadeout {
-  from {
-    bottom: 30px;
-    opacity: 1;
-  }
-  to {
-    bottom: 0;
-    opacity: 0;
-  }
-}
-
-@keyframes fadeout {
-  from {
-    bottom: 30px;
-    opacity: 1;
-  }
-  to {
-    bottom: 0;
-    opacity: 0;
   }
 }
 </style>

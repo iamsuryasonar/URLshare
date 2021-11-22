@@ -1,68 +1,9 @@
 <template>
-  <!-- <div>
-    <v-app-bar light elevate-on-scroll absolute color="transparent">
-      <v-toolbar-title class="title font-weight-light"
-        >Link Share</v-toolbar-title
-      >
-      <v-spacer></v-spacer>
-      <v-list>
-        <v-list-item align-center v-if="isonline">
-          <v-text-field
-            solo
-            flat
-            label="Username"
-            hide-details
-            v-model="username"
-          ></v-text-field>
-          <v-icon @click="searchUsername">mdi-account-search</v-icon>
-          <v-btn
-            v-for="item in onlinenavitem"
-            :key="item.icon"
-            :to="item.link"
-            :title="item.title"
-            text
-            >{{ item.text }}</v-btn
-          >
-        </v-list-item>
-      </v-list>
-      <v-list>
-        <v-list-item align-center v-if="isoffline">
-          <v-text-field
-            solo
-            flat
-            label="Username"
-            hide-details
-            v-model="username"
-          ></v-text-field>
-          <v-icon @click="searchUsername">mdi-account-search</v-icon>
-          <v-btn
-            v-for="item in offlinenavitem"
-            :key="item.icon"
-            :to="item.link"
-            :title="item.title"
-            text
-            >{{ item.text }}</v-btn
-          >
-        </v-list-item>
-      </v-list>
-    </v-app-bar>
-  </div> -->
   <div class="container">
     <div class="logotitle">
       <p>LinkShare</p>
     </div>
     <div class="searchandnavigationitems">
-      <div class="searchinputandicon">
-        <input
-          placeholder="Username"
-          type="text"
-          name="Username"
-          autocomplete="off"
-          required
-          v-model="username"
-        />
-        <i class="fas fa-search" @click="searchUsername"></i>
-      </div>
       <div class="navigation-items">
         <div v-if="isonline">
           <a
@@ -82,6 +23,18 @@
             >{{ item.text }}</a
           >
         </div>
+      </div>
+      <div class="searchinputandicon">
+        <input
+          placeholder="Username"
+          type="text"
+          name="Username"
+          autocomplete="off"
+          required
+          v-model="username"
+          @keyup.enter="searchUsername"
+        />
+        <i class="fas fa-search" @click="searchUsername"></i>
       </div>
     </div>
   </div>
@@ -182,15 +135,15 @@ export default {
 .container {
   width: 100%;
   height: 50px;
+  padding: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .logotitle {
-  margin-left: 20px;
   font-size: 30px;
 }
-.searchinputandicon{
+.searchinputandicon {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -218,11 +171,11 @@ input:focus {
   box-shadow: 0px 0px 1px 1px yellow;
 }
 
-i{
-  margin-left: 10px;
+i {
+  margin-left: 18px;
+  font-size: 28px;
 }
 .searchandnavigationitems {
-  margin-right: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
