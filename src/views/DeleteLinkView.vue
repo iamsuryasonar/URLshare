@@ -10,7 +10,7 @@
         <p class="card-text">{{ item.description }}</p>
         <div class="buttons">
           <button class="card-btn" @click="clickedlink(item.link)">
-            Linkify
+            Goto link
           </button>
           <button class="card-btn" @click="deletebtn(item.index)">
             Delete

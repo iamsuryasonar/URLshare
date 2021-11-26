@@ -2,7 +2,7 @@
   <div v-click-outside="onClickOutside">
     <div class="container">
       <div class="logotitle">
-        <a @click="menu = false" href="/">LinkShare</a>
+        <a @click="menu = false" href="/">URLshare</a>
       </div>
       <div class="searchandmenu">
         <div class="searchandnavigationitems">
