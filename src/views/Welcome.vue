@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="linkviewimage">
-      <img src="../assets/welcomeimage.png" alt="" />
+      <img src="../assets/welcomeimage.jpg" alt="an image containing shared urls using Url share web app"/>
     </div>
   </div>
 </template>
