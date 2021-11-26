@@ -6,7 +6,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
-    
   },
   "dependencies": {
     "core-js": "^2.6.5",
@@ -15,8 +14,7 @@
     "randomcolor": "^0.6.2",
     "vue": "^2.6.10",
     "vue-router": "^3.4.7",
-    "vuex": "^3.6.0",
-    "website-logo": "^2.0.0"
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.0",
