@@ -55,9 +55,9 @@ export default {
     return {
       overlay: false,
       items: {
-        title: "dad",
-        description: "sadasd",
-        link: "sadd",
+        title: "",
+        description: "",
+        link: "",
         icon: "",
         username: "",
       },

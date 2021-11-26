@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="menuoverlay" v-if="menu" >
+    <div class="menuoverlay" v-if="menu">
       <div class="menuoverlaywrapper">
         <div class="menucontents">
           <div v-if="isonline">
@@ -338,13 +338,13 @@ i:hover {
     margin-left: 12px;
     font-size: 20px;
   }
-  input{
+  input {
     font-size: 12px;
     padding: 0.25em 0.5em;
   }
   #menuclosebutton,
-#menuopenbutton {
-  font-size: 2rem;
-}
+  #menuopenbutton {
+    font-size: 2rem;
+  }
 }
 </style>
