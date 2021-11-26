@@ -3,10 +3,12 @@ import App from "./App.vue";
 import store from "./store/store";
 import firebase from "firebase";
 import router from "./routes";
-import firebaseConfig from "./firebaseconfig.js";
+import firebaseConfig from "../firebaseconfig.js";
+
 
 require("firebase/firestore");
 firebase.initializeApp(firebaseConfig);
+
 firebase.analytics();
 Vue.prototype.$firebase = firebase;
 
@@ -17,5 +19,5 @@ export const app = new Vue({
   router,
   render: (h) => h(App),
 
-  created() {},
+  created() { },
 }).$mount("#app");

@@ -6,9 +6,11 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
+    
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "dotenv": "^10.0.0",
     "firebase": "^7.24.0",
     "randomcolor": "^0.6.2",
     "vue": "^2.6.10",

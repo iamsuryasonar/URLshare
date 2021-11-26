@@ -55,9 +55,9 @@ export default {
     return {
       overlay: false,
       items: {
-        title: "",
-        description: "",
-        link: "",
+        title: "dad",
+        description: "sadasd",
+        link: "sadd",
         icon: "",
         username: "",
       },
@@ -80,6 +80,9 @@ export default {
 
   methods: {
     addLink() {
+      this.$store.dispatch("actionLoading", {
+        loading: true,
+      });
       var uniqueUrlKey = firebase
         .database()
         .ref()
@@ -113,6 +116,7 @@ export default {
           (this.items.title = ""),
             (this.items.description = ""),
             (this.items.link = "");
+
           this.$store.dispatch("actionSnackbar", {
             content: "Link Added",
             type: "success",
@@ -213,7 +217,7 @@ li {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 90vh;
+    height: 80vh;
     width: auto;
     padding: 10%;
     margin: auto;

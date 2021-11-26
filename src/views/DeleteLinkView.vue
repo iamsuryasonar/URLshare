@@ -2,17 +2,17 @@
   <div class="main">
     <Snackbar class="snackbar"></Snackbar>
     <div class="card-wrap" v-for="(item, index) in items" :key="index">
-      <div class="card-header one">
-        <i class="fas fa-code"></i>
+      <div class="card-header">
+        <i class="fas fa-link"></i>
       </div>
       <div class="card-content">
         <h1 class="card-title">{{ item.title }}</h1>
         <p class="card-text">{{ item.description }}</p>
         <div class="buttons">
-          <button class="card-btn one" @click="clickedlink(item.link)">
+          <button class="card-btn" @click="clickedlink(item.link)">
             Linkify
           </button>
-          <button class="card-btn one" @click="deletebtn(item.index)">
+          <button class="card-btn" @click="deletebtn(item.index)">
             Delete
           </button>
         </div>
@@ -40,10 +40,14 @@ export default {
 
   methods: {
     getData() {
+      this.items.length = 0;
+      this.$store.dispatch("actionLoading", {
+        loading: true,
+      });
       firebase
         .database()
         .ref("users/" + firebase.auth().currentUser.uid)
-        .on("value", (snapshot) => {
+        .once("value", (snapshot) => {
           if (snapshot != null) {
             this.$store.dispatch("getLinks", {
               username: snapshot.val().username,
@@ -67,7 +71,11 @@ export default {
             content: "Link deleted",
             type: "success",
           });
-          this.getData();
+          if (this.items.length === 1) {
+            this.items.pop();
+          } else {
+            this.getData();
+          }
         })
         .catch((error) => {
           this.$store.dispatch("actionSnackbar", {
@@ -88,7 +96,7 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-.snackbar{
+.snackbar {
   width: 85%;
 }
 .card-wrap {
@@ -109,13 +117,14 @@ export default {
   transform: scale(1.1);
 }
 .card-header {
+  display: grid;
   height: auto;
   width: 25%;
-  background: red;
   border-radius: 100% 50% 50% 0% / 0% 0% 100% 100%;
 }
 
 .card-header i {
+  margin: auto;
   color: #fff;
   font-size: 72px;
 }
@@ -124,7 +133,7 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 60%;
-  margin: 0 auto;
+  margin: 5px auto;
 }
 .card-title {
   text-align: center;
@@ -147,18 +156,46 @@ export default {
   margin-bottom: 15px;
   text-transform: uppercase;
 }
-.card-header.one {
-  background: linear-gradient(to bottom left, #f12711, #f5af19);
+.card-header {
+  background: linear-gradient(
+    90deg,
+    rgba(4, 43, 54, 1) 0%,
+    rgba(2, 105, 88, 1) 0%,
+    rgba(45, 209, 171, 1) 100%
+  );
 }
 
-.card-btn.one {
+.card-btn {
   margin-left: 10px;
-  background: linear-gradient(to left, #f12711, #f5af19);
+  background: linear-gradient(
+    90deg,
+    rgba(4, 43, 54, 1) 0%,
+    rgba(2, 105, 88, 1) 0%,
+    rgba(45, 209, 171, 1) 100%
+  );
 }
 .buttons {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+@media only screen and (max-width: 700px) {
+  .main {
+    width: 100%;
+    margin: 2% auto;
+  }
+  .card-content {
+    margin: 0px auto;
+  }
+  .card-title {
+    margin-bottom: 10px;
+  }
+  .card-text {
+    margin-bottom: 10px;
+  }
+  .card-btn {
+    margin-bottom: 10px;
+  }
 }
 </style>

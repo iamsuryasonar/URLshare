@@ -26,14 +26,12 @@ const store = new Vuex.Store({
         state.auth = false;
       }
     },
-    setLinks(state, payload) {
-      state.links = payload;
-    },
     setLoading(state, payload) {
       state.loading = payload;
     },
     setSnackbar(state, payload) {
       state.snackbar = payload;
+      state.loading = false;
       setTimeout(() => {
         state.snackbar.content = null;
       }, 4000);
@@ -56,35 +54,35 @@ const store = new Vuex.Store({
         .database()
         .ref("usernames/" + payload.username + "/userid/")
         .once("value", (snapshot) => {
+          this.state.links.length = 0
           if (snapshot.exists()) {
-            firebase
-              .database()
-              .ref("users/" + snapshot.val() + "/urls/")
-              .on("value", (snapshot) => {
-                if (snapshot.val() != null) {
-                  this.state.links.length = 0;
-
-                  snapshot.forEach((childSnapshot) => {
-                    this.state.links.push({
-                      index: childSnapshot.key,
-                      title: childSnapshot.val().title,
-                      description: childSnapshot.val().description,
-                      link: childSnapshot.val().link,
-                      color: childSnapshot.val().color,
+              firebase
+                .database()
+                .ref("users/" + snapshot.val() + "/urls/")
+                .once("value", (snapshot) => {
+                  if (snapshot.val() != null) {
+                    snapshot.forEach((childSnapshot) => {
+                      this.state.links.push({
+                        index: childSnapshot.key,
+                        title: childSnapshot.val().title,
+                        description: childSnapshot.val().description,
+                        link: childSnapshot.val().link,
+                        color: childSnapshot.val().color,
+                      });
+                      commit("setLoading", false);
                     });
-                    commit("setLoading", false);
-                  });
-                } else {
-                  commit("setLoading", false);
-                  alert("No links found!!!");
-                }
-              });
+                  } else {
+                    commit("setSnackbar", {
+                      content: "No Links found",
+                      type: "warning",
+                    });
+                  }
+                });
           } else {
-            commit("setLoading", false);
-            commit("setSnackbar", {
-              content: "User does not exist!!!",
-              type: "error",
-            });
+              commit("setSnackbar", {
+                content: "User does not exist!!!",
+                type: "error",
+              });
           }
         });
     },
@@ -106,27 +104,24 @@ const store = new Vuex.Store({
         .then(() => {
           firebase
             .database()
-            .ref("usernames/" + payload.username)
+            .ref("users/" + firebase.auth().currentUser.uid)
             .set({
-              userid: firebase.auth().currentUser.uid,
+              username: payload.username,
             });
         })
         .then(() => {
           firebase
             .database()
-            .ref("users/" + firebase.auth().currentUser.uid)
+            .ref("usernames/" + payload.username)
             .set({
-              username: payload.username,
+              userid: firebase.auth().currentUser.uid,
             });
-
-          commit("setLoading", false);
           commit("setSnackbar", {
             content: "User registered",
             type: "success",
           });
         })
         .catch((error) => {
-          commit("setLoading", false);
           commit("setSnackbar", {
             content: error.message,
             type: "error",
@@ -145,7 +140,6 @@ const store = new Vuex.Store({
             name: user.displayName,
             email: user.email,
           };
-          commit("setLoading", false);
           commit("setUser", newUser);
           commit("setSnackbar", {
             content: "User Logged In",
@@ -157,7 +151,6 @@ const store = new Vuex.Store({
             content: error.message,
             type: "error",
           });
-          commit("setLoading", false);
         });
     },
     autoSignIn({ commit }, payload) {
@@ -190,15 +183,12 @@ const store = new Vuex.Store({
           return user
             .updatePassword(payload.newpassword)
             .then(() => {
-              commit("setLoading", false);
-
               commit("setSnackbar", {
                 content: "Password Updated",
                 type: "success",
               });
             })
             .catch((error) => {
-              commit("setLoading", false);
               commit("setSnackbar", {
                 content: error.message,
                 type: "error",
@@ -221,14 +211,12 @@ const store = new Vuex.Store({
           return user
             .updateEmail(payload.newemail)
             .then(() => {
-              commit("setLoading", false);
               commit("setSnackbar", {
                 content: "Email Updated",
                 type: "success",
               });
             })
             .catch((error) => {
-              commit("setLoading", false);
               commit("setSnackbar", {
                 content: error.message,
                 type: "error",
@@ -274,7 +262,6 @@ const store = new Vuex.Store({
           firebase.auth().currentUser.delete(), commit("setLoading", false);
         })
         .catch((error) => {
-          commit("setLoading", false);
           commit("setSnackbar", {
             content: error.message,
             type: "error",
@@ -288,6 +275,9 @@ const store = new Vuex.Store({
     },
     auth(state) {
       return state.auth;
+    },
+    links(state) {
+      return state.links;
     },
   },
 });

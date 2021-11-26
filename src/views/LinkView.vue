@@ -1,9 +1,14 @@
 <template>
-<div class="main">
-  <Snackbar class="snackbar"></Snackbar>
-    <div class="card-wrap" v-for="(item, index) in items" :key="index" @click="clickedlink(item.link)">
-      <div class="card-header one">
-        <i class="fas fa-code"></i>
+  <div class="main">
+    <Snackbar class="snackbar"></Snackbar>
+    <div
+      class="card-wrap"
+      v-for="(item,index) in items"
+      :key="index"
+      @click="clickedlink(item.link)"
+    >
+      <div class="card-header">
+        <i class="fas fa-link"></i>
       </div>
       <div class="card-content">
         <h1 class="card-title">{{ item.title }}</h1>
@@ -26,7 +31,12 @@ export default {
       userIdOfUsername: "",
     };
   },
-  computed: {},
+  computed: {
+    // items() {
+    //   console.log(this.$store.getters.links)
+    //   return this.$store.getters.links;
+    // },
+  },
 
   created() {
     this.$store.dispatch("getLinks", {
@@ -35,14 +45,14 @@ export default {
   },
 
   methods: {
-    clickedlink(link){
-      window.location.href = link
+    clickedlink(link) {
+      window.location.href = link;
     },
   },
 };
 </script>
 <style scoped>
-.main{
+.main {
   width: 70%;
   margin: 5% auto;
   height: 100%;
@@ -50,7 +60,7 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-.snackbar{
+.snackbar {
   width: 85%;
 }
 .card-wrap {
@@ -72,13 +82,20 @@ export default {
   transform: scale(1.1);
 }
 .card-header {
+  display: grid;
   height: auto;
   width: 25%;
-  background: red;
   border-radius: 100% 50% 50% 0% / 0% 0% 100% 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 43, 54, 1) 0%,
+    rgba(2, 105, 88, 1) 0%,
+    rgba(45, 209, 171, 1) 100%
+  );
 }
 
 .card-header i {
+  margin: auto;
   color: #fff;
   font-size: 72px;
 }
@@ -87,7 +104,7 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 60%;
-  margin: 0 auto;
+  margin: 16px auto;
 }
 .card-title {
   text-align: center;
@@ -101,7 +118,13 @@ export default {
   font-size: 12px;
   margin-bottom: 20px;
 }
-.card-header.one {
-  background: linear-gradient(to bottom left, #f12711, #f5af19);
+@media only screen and (max-width: 700px) {
+  .main {
+    width: 100%;
+    margin: 2% auto;
+  }
+  .card-content{
+    margin: 0px auto;
+  }
 }
 </style>

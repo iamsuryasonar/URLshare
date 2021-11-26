@@ -54,9 +54,9 @@ export default {
     Snackbar,
   },
   data: () => ({
-    username: "test",
-    password: "11111111",
-    email: "test@test.com",
+    username: "",
+    password: "",
+    email: "",
   }),
 
   computed: {},
@@ -71,11 +71,15 @@ export default {
         .child(this.username)
         .once("value", (snapshot) => {
           if (!snapshot.exists()) {
-            this.$store.dispatch("signUserUp", {
-              email: this.email,
-              password: this.password,
-              username: this.username,
-            });
+            this.$store
+              .dispatch("signUserUp", {
+                email: this.email,
+                password: this.password,
+                username: this.username,
+              })
+              .then(() => {
+                (this.email = ""), (this.password = ""), (this.username = "");
+              });
           } else {
             this.$store.dispatch("actionSnackbar", {
               content: "username already exist",
@@ -128,6 +132,7 @@ button {
   text-decoration: none;
 }
 a {
+  align-self: center;
   text-decoration-line: none;
   color: black;
   font-size: 14px;
@@ -187,7 +192,7 @@ li {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 90vh;
+    height: 80vh;
     width: auto;
     padding: 10%;
     margin: auto;

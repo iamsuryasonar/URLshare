@@ -14,11 +14,8 @@ export default {
   },
   computed: {
     loading() {
-      if (this.$store.state.loading) {
-        return true;
-      } else if (this.$store.state.loading) {
-        return false;
-      }
+      if (this.$store.state.loading) return true;
+      else if (this.$store.state.loading) return false;
     },
   },
 };
@@ -26,8 +23,8 @@ export default {
 <style scoped>
 .spinnercontainer {
   position: fixed;
-  width: 15vw;
-  height: 15vw;
+  width: 100px;
+  height: 100px;
   margin: auto;
   left: 0;
   right: 0;

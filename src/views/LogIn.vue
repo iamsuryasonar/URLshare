@@ -107,7 +107,10 @@ export default {
       this.$store.dispatch("signUserIn", {
         email: this.email,
         password: this.password,
-      });
+      }).then(()=>{
+        this.email = "",
+        this.password = ""
+      })
     },
 
     onClickOutside() {
@@ -116,9 +119,9 @@ export default {
     reset() {
       if (!this.email) {
         this.$store.dispatch("actionSnackbar", {
-            content: "Enter valid email",
-            type: "warning",
-          });
+          content: "Enter valid email",
+          type: "warning",
+        });
         return;
       }
 
@@ -188,6 +191,7 @@ button {
 }
 p {
   font-size: 16px;
+  align-self: center;
 }
 .list_items {
   list-style: none;
@@ -240,6 +244,7 @@ li {
   width: 100%;
 }
 a {
+  
   cursor: pointer;
   text-decoration-line: none;
   color: black;
@@ -272,7 +277,7 @@ a:hover {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 90vh;
+    height: 80vh;
     width: auto;
     padding: 10%;
     margin: auto;

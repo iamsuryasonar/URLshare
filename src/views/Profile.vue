@@ -164,6 +164,7 @@ export default {
       });
     },
     retrieveUsername() {
+      this.$store.dispatch("actionLoading", true);
       if (
         firebase.auth().currentUser.uid != undefined ||
         firebase.auth().currentUser.uid != null
@@ -174,6 +175,8 @@ export default {
           .once("value", (snapshot) => {
             if (snapshot != null || snapshot.val().username != undefined) {
               this.username = snapshot.val().username;
+
+              this.$store.dispatch("actionLoading", false);
             }
           });
       }
@@ -201,7 +204,6 @@ export default {
           this.emailoverlay = false;
         })
         .catch((error) => {
-          this.$store.dispatch("actionLoading", false);
           this.$store.dispatch("actionSnackbar", {
             content: error.message,
             type: "error",
@@ -221,7 +223,6 @@ export default {
           this.passwordoverlay = false;
         })
         .catch((error) => {
-          this.$store.dispatch("actionLoading", false);
           this.$store.dispatch("actionSnackbar", {
             content: error.message,
             type: "error",
@@ -236,11 +237,9 @@ export default {
           currentpassword: this.currentPassword,
         })
         .catch((error) => {
-          console.log("profile", error.message);
-          this.$store.dispatch("actionLoading", false);
           this.$store.dispatch("actionSnackbar", {
             content: error.message,
-            type: "error"
+            type: "error",
           });
         });
     },
@@ -261,8 +260,9 @@ p {
   padding: 0;
 }
 
+
 .wrapper {
-  width: 70%;
+  width: 40%;
   height: 90vh;
   margin: auto;
   display: flex;
@@ -279,9 +279,11 @@ p {
 }
 .title {
   margin: auto;
+  font-size: 30px;
 }
 img {
   width: 50px;
+  margin: auto 20px;
 }
 .iconandusername {
   display: flex;
@@ -289,6 +291,11 @@ img {
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
+}
+.iconandusername p{
+  font-size: 30px;
+  color: #45494d;
+  margin: auto 20px;
 }
 .emailandediticon {
   display: flex;
@@ -347,9 +354,7 @@ button {
   color: aliceblue;
   text-decoration: none;
 }
-p {
-  font-size: 16px;
-}
+
 .list_items {
   list-style: none;
 }
@@ -391,7 +396,7 @@ i {
 
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 90vh;
+    height: 80vh;
     width: auto;
     padding: 10%;
     margin: auto;
