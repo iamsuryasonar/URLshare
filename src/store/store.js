@@ -9,6 +9,7 @@ const store = new Vuex.Store({
     user: {},
     auth: false,
     links: [],
+    linkview_items: { links: [], username: "", bio: "", email: "", image_url: "" },
     loading: false,
     snackbar: {
       content: null,
@@ -48,41 +49,83 @@ const store = new Vuex.Store({
       commit("setSnackbar", payload);
     },
 
+    getitemsforlinkview({ commit }, payload) {
+      commit("setLoading", true);
+      this.state.linkview_items.links.length = 0;
+      firebase
+        .database()
+        .ref("usernames/" + payload.username + "/userid/")
+        .once("value", (snapshot) => {
+          if (snapshot.exists()) {
+            firebase
+              .database()
+              .ref("users/" + snapshot.val())
+              .once("value", (Snapshot) => {
+                (this.state.linkview_items.bio = Snapshot.val().bio),
+                  (this.state.linkview_items.username = Snapshot.val().username);
+                  this.state.linkview_items.image_url = Snapshot.val().photo;
+
+                commit("setLoading", false);
+                if (Snapshot.val().urls != null) {
+                  const obj = Snapshot.val().urls;
+                  for (const key of Object.keys(obj)) {
+                    this.state.linkview_items.links.push({
+                      index: key,
+                      title: obj[key].title,
+                      description: obj[key].description,
+                      link: obj[key].link,
+                    });
+                  }
+                } else {
+                  commit("setSnackbar", {
+                    content: "No links found",
+                    type: "error",
+                  });
+                }
+              });
+          } else {
+            commit("setSnackbar", {
+              content: "User does not exist!!!",
+              type: "error",
+            });
+          }
+        });
+    },
     getLinks({ commit }, payload) {
       commit("setLoading", true);
       firebase
         .database()
         .ref("usernames/" + payload.username + "/userid/")
         .once("value", (snapshot) => {
-          this.state.links.length = 0
+          this.state.links.length = 0;
           if (snapshot.exists()) {
-              firebase
-                .database()
-                .ref("users/" + snapshot.val() + "/urls/")
-                .once("value", (snapshot) => {
-                  if (snapshot.val() != null) {
-                    snapshot.forEach((childSnapshot) => {
-                      this.state.links.push({
-                        index: childSnapshot.key,
-                        title: childSnapshot.val().title,
-                        description: childSnapshot.val().description,
-                        link: childSnapshot.val().link,
-                        color: childSnapshot.val().color,
-                      });
-                      commit("setLoading", false);
+            firebase
+              .database()
+              .ref("users/" + snapshot.val() + "/urls/")
+              .once("value", (snapshot) => {
+                if (snapshot.val() != null) {
+                  snapshot.forEach((childSnapshot) => {
+                    this.state.links.push({
+                      index: childSnapshot.key,
+                      title: childSnapshot.val().title,
+                      description: childSnapshot.val().description,
+                      link: childSnapshot.val().link,
+                      color: childSnapshot.val().color,
                     });
-                  } else {
-                    commit("setSnackbar", {
-                      content: "No Links found",
-                      type: "warning",
-                    });
-                  }
-                });
-          } else {
-              commit("setSnackbar", {
-                content: "User does not exist!!!",
-                type: "error",
+                    commit("setLoading", false);
+                  });
+                } else {
+                  commit("setSnackbar", {
+                    content: "No Links found",
+                    type: "warning",
+                  });
+                }
               });
+          } else {
+            commit("setSnackbar", {
+              content: "User does not exist!!!",
+              type: "error",
+            });
           }
         });
     },

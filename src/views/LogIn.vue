@@ -87,6 +87,7 @@ export default {
     password: "",
     forgotpasswordoverlay: false,
     email: "",
+    emailregex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
   }),
 
   computed: {
@@ -100,17 +101,31 @@ export default {
       if (!this.email || !this.password) {
         this.$store.dispatch("actionSnackbar", {
           content: "Both email and password is required",
-          type: "warning",
+          type: "error",
+        });
+        return;
+      } else if (!this.emailregex.test(this.email)) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Please enter a valid Email",
+          type: "error",
+        });
+        return;
+      } else if (this.password.length < 6) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Password must be greater than 6 characters",
+          type: "error",
         });
         return;
       }
-      this.$store.dispatch("signUserIn", {
-        email: this.email,
-        password: this.password,
-      }).then(()=>{
-        this.email = "",
-        this.password = ""
-      })
+
+      this.$store
+        .dispatch("signUserIn", {
+          email: this.email,
+          password: this.password,
+        })
+        .then(() => {
+          (this.email = ""), (this.password = "");
+        });
     },
 
     onClickOutside() {
@@ -244,14 +259,14 @@ li {
   width: 100%;
 }
 a {
-  
   cursor: pointer;
   text-decoration-line: none;
   color: black;
   font-size: 14px;
 }
 a:hover {
-  color: red;
+  color: rgb(45, 209, 154);
+  border-bottom: 2px solid #e4e403;
 }
 .forgotpasswordoverlay {
   position: absolute;

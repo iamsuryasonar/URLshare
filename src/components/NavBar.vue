@@ -165,7 +165,7 @@ export default {
             console.log(error.name);
           });
       } else {
-        this.$store.dispatch("getLinks", {
+        this.$store.dispatch("getitemsforlinkview", {
           username: this.username,
         });
       }
@@ -256,7 +256,7 @@ a {
 }
 a:hover,
 i:hover {
-  color: red;
+  color: rgb(45, 209, 154);
 }
 
 /* menu overlay */
@@ -274,7 +274,7 @@ i:hover {
 #menuopenbutton {
   cursor: pointer;
   font-size: 2.5rem;
-  color: #ffffff;
+  color: rgb(49, 49, 49);
 }
 #menuclosebutton:hover,
 #menuopenbutton:hover {
@@ -318,7 +318,7 @@ i:hover {
   color: white;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 900px) {
   .navigation-items {
     display: none;
   }

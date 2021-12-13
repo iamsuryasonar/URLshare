@@ -66,6 +66,7 @@ export default {
   height: 90%;
   width: 90%;
   border-radius: 20px;
+  margin: auto 20px;
 }
 .buttonandatag {
   display: flex;
@@ -79,7 +80,8 @@ export default {
   color: white;
 }
 .buttonandatag a:hover {
-  color: black;
+  color: rgb(45, 209, 154);
+  border-bottom: 2px solid #e4e403;
 }
 button {
   font-family: "Montserrat", sans-serif;
@@ -119,7 +121,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    margin: 20px auto;
   }
   .title {
     margin: 10px auto;
@@ -129,11 +131,15 @@ button:hover {
     font-size: 20px;
   }
   button {
-    margin: 1% 0px;
+    margin: auto 10px;
     padding: 4px 10px;
     font-size: 20px;
   }
+  .buttonandatag{
+    margin: 20px auto;
+  }
   .buttonandatag a {
+    margin: auto 10px;
     font-size: 20px;
   }
 }

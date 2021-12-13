@@ -57,6 +57,7 @@ export default {
     username: "",
     password: "",
     email: "",
+    emailregex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
   }),
 
   computed: {},
@@ -65,6 +66,31 @@ export default {
 
   methods: {
     register() {
+      if (this.email == "") {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Please enter your Email",
+          type: "error",
+        });
+        return;
+      } else if (!this.emailregex.test(this.email)) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Please enter a valid Email",
+          type: "error",
+        });
+        return;
+      } else if (this.password.length < 6) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Password must be greater than 6 characters",
+          type: "error",
+        });
+        return;
+      } else if (this.username.length < 6) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Username must be greater than 6 characters",
+          type: "error",
+        });
+        return;
+      }
       firebase
         .database()
         .ref("usernames/")
@@ -138,7 +164,8 @@ a {
   font-size: 14px;
 }
 a:hover {
-  color: red;
+  color: rgb(45, 209, 154);
+  border-bottom: 2px solid #e4e403;
 }
 .list_items {
   list-style: none;

@@ -5,8 +5,34 @@
       <div class="container">
         <p class="title">Profile</p>
         <div class="iconandusername">
-          <img class="" alt="" :src="url" />
+          <div class="profilepicture" @click="choose_image_overlay">
+            <input
+              type="file"
+              ref="image_input"
+              style="display: none"
+              @change="previewImage"
+              accept="image/*"
+            />
+            <div class="image">
+              <img class="" alt="" :src="imageUrl" />
+            </div>
+            <div class="avataroverlay">
+              <i class="fas fa-edit"> </i>
+            </div>
+          </div>
+
           <p>{{ username }}</p>
+        </div>
+        <div class="bio">
+          <textarea
+            v-model="bio"
+            name=""
+            placeholder="Enter your bio here"
+            id=""
+            cols="30"
+            rows="4"
+          ></textarea>
+          <button @click="save_bio">Save bio</button>
         </div>
         <div class="emailandediticon">
           <p>{{ email }}</p>
@@ -143,14 +169,25 @@ export default {
       newPassword: "",
       username: "",
       email: "",
+      bio: "",
+      image: "",
+      imageData: null,
     };
   },
 
-  computed: {},
+  computed: {
+    imageUrl() {
+      if (this.image != null) {
+        return this.image;
+      } else {
+        return this.url;
+      }
+    },
+  },
   mounted() {},
   created() {
     this.retrieveEmail();
-    this.retrieveUsername();
+    this.retrieveUsernameBioImage();
   },
 
   methods: {
@@ -163,7 +200,7 @@ export default {
         }
       });
     },
-    retrieveUsername() {
+    retrieveUsernameBioImage() {
       this.$store.dispatch("actionLoading", true);
       if (
         firebase.auth().currentUser.uid != undefined ||
@@ -175,7 +212,8 @@ export default {
           .once("value", (snapshot) => {
             if (snapshot != null || snapshot.val().username != undefined) {
               this.username = snapshot.val().username;
-
+              this.bio = snapshot.val().bio;
+              this.image = snapshot.val().photo;
               this.$store.dispatch("actionLoading", false);
             }
           });
@@ -187,10 +225,24 @@ export default {
       this.confirmoverlay = false;
       this.usernameoverlay = false;
     },
-
-    logOut() {
-      this.$store.dispatch("logout");
+    save_bio() {
+      this.$store.dispatch("actionLoading", {
+        loading: true,
+      });
+      firebase
+        .database()
+        .ref("users/" + firebase.auth().currentUser.uid)
+        .update({
+          bio: this.bio,
+        })
+        .then(() => {
+          this.$store.dispatch("actionSnackbar", {
+            content: "Bio updated",
+            type: "success",
+          });
+        });
     },
+
     changeEmail() {
       this.$store
         .dispatch("changeemail", {
@@ -230,6 +282,9 @@ export default {
         });
     },
 
+    logOut() {
+      this.$store.dispatch("logout");
+    },
     confirmDelete() {
       this.$store
         .dispatch("deleteaccount", {
@@ -243,6 +298,68 @@ export default {
           });
         });
     },
+    //-----------image upload---------------------------->
+
+    //todo: compress image before upload
+    choose_image_overlay() {
+      this.$refs.image_input.click();
+    },
+    previewImage(event) {
+      this.uploadValue = 0;
+      this.imageData = event.target.files[0];
+      this.onUpload();
+    },
+    onUpload() {
+      this.$store.dispatch("actionLoading", {
+        loading: true,
+      });
+      this.image = null;
+      const storageRef = firebase
+        .storage()
+        .ref("profilepictures/" + firebase.auth().currentUser.uid)
+        .put(this.imageData);
+      storageRef.on(
+        `state_changed`,
+        (snapshot) => {
+          this.uploadValue =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        },
+        (error) => {
+          this.$store.dispatch("actionSnackbar", {
+            content: error.message,
+            type: "error",
+          });
+        },
+        () => {
+          this.uploadValue = 100;
+          storageRef.snapshot.ref.getDownloadURL().then((url) => {
+            this.image = url;
+            this.create();
+          });
+        }
+      );
+    },
+    create() {
+      firebase
+        .database()
+        .ref("users/" + firebase.auth().currentUser.uid)
+        .update({
+          photo: this.image,
+        })
+        .then(() => {
+          this.$store.dispatch("actionSnackbar", {
+            content: "profile picture updated",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          this.$store.dispatch("actionSnackbar", {
+            content: error.message,
+            type: "error",
+          });
+        });
+    },
+    //------------------------------------------------->
   },
 };
 </script>
@@ -259,7 +376,6 @@ p {
   margin: 0;
   padding: 0;
 }
-
 
 .wrapper {
   width: 40%;
@@ -278,13 +394,43 @@ p {
   justify-content: space-between;
 }
 .title {
+  color: #2e2e2e;
   margin: auto;
   font-size: 30px;
 }
+.profilepicture {
+  position: relative;
+}
 img {
   width: 50px;
+  height: 50px;
   margin: auto 20px;
+  object-position: center;
 }
+.avataroverlay {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.3;
+  background: transparent;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  display: grid;
+}
+.avataroverlay:hover {
+  background: linear-gradient(to right, #8e9eab, #eef2f3);
+}
+.avataroverlay i {
+  margin: auto;
+}
+.avataroverlay i:hover {
+  color: black;
+}
+
 .iconandusername {
   display: flex;
   flex-direction: row;
@@ -292,17 +438,31 @@ img {
   align-items: center;
   margin-top: 20px;
 }
-.iconandusername p{
+.iconandusername p {
   font-size: 30px;
   color: #45494d;
   margin: auto 20px;
 }
+.bio {
+  margin: 15px 0px;
+}
+.bio textarea {
+  width: 100%;
+  margin: auto;
+  padding: 5px;
+  background-color: transparent;
+}
+.bio button {
+  width: 100%;
+  margin: auto;
+  margin-top: 10px;
+}
+
 .emailandediticon {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
 }
 .passwordandediticon {
   display: flex;
@@ -325,7 +485,10 @@ button:hover {
   background-color: rgb(7, 146, 100);
 }
 .buttondelete {
-  color: indianred;
+  color: white;
+}
+.buttondelete:hover {
+  color: red;
 }
 
 .overlay {
@@ -386,6 +549,9 @@ li {
 }
 i {
   cursor: pointer;
+}
+i:hover {
+  color: rgb(45, 209, 154);
 }
 
 .confirmandrejectbuttons {

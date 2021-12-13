@@ -1,18 +1,37 @@
 <template>
   <div class="main">
     <Snackbar class="snackbar"></Snackbar>
-    <div
-      class="card-wrap"
-      v-for="(item,index) in items"
-      :key="index"
-      @click="clickedlink(item.link)"
-    >
-      <div class="card-header">
-        <i class="fas fa-link"></i>
+    <div class="container">
+      <div class="card">
+        <div class="profile_details">
+          <p class="title">Profile</p>
+          <div class="imgandusername">
+            <img class="" alt="" :src="linkview_items.image_url" />
+            <p>{{ linkview_items.username }}</p>
+          </div>
+          <div class="email">
+            <p>{{ linkview_items.email }}</p>
+          </div>
+          <div class="bio">
+            <p>"{{ linkview_items.bio }}"</p>
+          </div>
+        </div>
       </div>
-      <div class="card-content">
-        <h1 class="card-title">{{ item.title }}</h1>
-        <p class="card-text">{{ item.description }}</p>
+      <div class="link_card_container">
+        <div
+          class="card-wrap"
+          v-for="(item, index) in linkview_items.links"
+          :key="index"
+          @click="clickedlink(item.link)"
+        >
+          <div class="card-header">
+            <i class="fas fa-link"></i>
+          </div>
+          <div class="card-content">
+            <h1 class="card-title">{{ item.title }}</h1>
+            <p class="card-text">{{ item.description }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -26,20 +45,15 @@ export default {
   },
   data() {
     return {
-      items: this.$store.state.links,
+      linkview_items: this.$store.state.linkview_items,
       userid: "",
       userIdOfUsername: "",
     };
   },
-  computed: {
-    // items() {
-    //   console.log(this.$store.getters.links)
-    //   return this.$store.getters.links;
-    // },
-  },
+  computed: {},
 
   created() {
-    this.$store.dispatch("getLinks", {
+    this.$store.dispatch("getitemsforlinkview", {
       username: this.$route.params.username,
     });
   },
@@ -53,7 +67,7 @@ export default {
 </script>
 <style scoped>
 .main {
-  width: 70%;
+  width: 90%;
   margin: 5% auto;
   height: 100%;
   display: flex;
@@ -63,10 +77,59 @@ export default {
 .snackbar {
   width: 85%;
 }
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.card {
+  margin: 20px auto;
+  width: 40%;
+  padding: 20px;
+  border-radius: 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 43, 54, 1) 0%,
+    rgba(2, 105, 88, 1) 0%,
+    rgba(45, 209, 171, 1) 100%
+  );
+}
+.profile_details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.title {
+  font-size: 20px;
+  align-self: center;
+  margin-bottom: 10px;
+}
+.imgandusername img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+}
+.imgandusername p {
+  align-self: center;
+}
+.imgandusername {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.bio {
+  text-align: justify;
+}
+.link_card_container {
+  min-width: 60%;
+  margin-bottom: 20px;
+}
 .card-wrap {
   cursor: pointer;
-  margin: 20px auto;
-  width: 85%;
+  margin: 20px 20px;
+  width: 100%;
   background: #fff;
   border-radius: 20px;
   border: 5px solid #fff;
@@ -118,13 +181,34 @@ export default {
   font-size: 12px;
   margin-bottom: 20px;
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 900px) {
   .main {
     width: 100%;
     margin: 2% auto;
   }
-  .card-content{
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card {
+    width: 90%;
+    margin: 10px auto;
+  }
+  .link_card_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 10px auto;
+  }
+  .card-content {
     margin: 0px auto;
+  }
+  .card-wrap {
+    margin: 10px auto;
   }
 }
 </style>

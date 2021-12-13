@@ -3,6 +3,7 @@
     <div class="wrapper">
       <Snackbar></Snackbar>
       <ul @keyup.enter="addLink">
+        <div class="title"> <p>Add new link</p></div>
         <li class="list_items">
           <input
             placeholder="Title"
@@ -109,8 +110,6 @@ export default {
           title: this.items.title,
           description: this.items.description,
           link: this.items.link,
-          //to add random color everytime a new link is added
-          color: "#" + ((Math.random() * 0xffffff) << 0).toString(16),
         })
         .then(() => {
           (this.items.title = ""),
@@ -153,6 +152,11 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.title p{
+  color: #2e2e2e;
+  margin: 15px auto;
+  font-size: 30px;
 }
 
 li,
