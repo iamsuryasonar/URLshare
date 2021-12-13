@@ -202,6 +202,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 99;
 }
 .logotitle {
   font-size: 30px;

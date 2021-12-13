@@ -567,5 +567,8 @@ i:hover {
     padding: 10%;
     margin: auto;
   }
+  .iconandusername p {
+    font-size: 24px;
+  }
 }
 </style>
