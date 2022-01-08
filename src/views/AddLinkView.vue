@@ -3,7 +3,7 @@
     <div class="wrapper">
       <Snackbar></Snackbar>
       <ul @keyup.enter="addLink">
-        <div class="title"> <p>Add new link</p></div>
+        <div class="title"><p>Add new link</p></div>
         <li class="list_items">
           <input
             placeholder="Title"
@@ -84,6 +84,14 @@ export default {
       this.$store.dispatch("actionLoading", {
         loading: true,
       });
+      if (!this.items.title || !this.items.description || !this.items.link) {
+        this.$store.dispatch("actionSnackbar", {
+          content: "Title, description and url are required",
+          type: "error",
+        });
+        return;
+      }
+
       var uniqueUrlKey = firebase
         .database()
         .ref()
@@ -153,7 +161,7 @@ html {
   flex-direction: column;
   justify-content: center;
 }
-.title p{
+.title p {
   color: #2e2e2e;
   margin: 15px auto;
   font-size: 30px;

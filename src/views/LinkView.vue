@@ -6,7 +6,7 @@
         <div class="profile_details">
           <p class="title">Profile</p>
           <div class="imgandusername">
-            <img class="" alt="" :src="linkview_items.image_url" />
+            <img  alt="" :src="imageUrl" />
             <p>{{ linkview_items.username }}</p>
           </div>
           <div class="email">
@@ -45,12 +45,22 @@ export default {
   },
   data() {
     return {
+      url:
+        "https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light",
       linkview_items: this.$store.state.linkview_items,
       userid: "",
       userIdOfUsername: "",
     };
   },
-  computed: {},
+  computed: {
+    imageUrl() {
+      if (this.linkview_items.image_url != null) {
+        return this.linkview_items.image_url;
+      } else {
+        return this.url;
+      }
+    },
+  },
 
   created() {
     this.$store.dispatch("getitemsforlinkview", {
@@ -142,7 +152,7 @@ export default {
   justify-content: center;
 }
 .card-wrap:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 .card-header {
   display: grid;

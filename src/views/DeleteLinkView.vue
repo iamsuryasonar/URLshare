@@ -10,10 +10,10 @@
         <p class="card-text">{{ item.description }}</p>
         <div class="buttons">
           <button class="card-btn" @click="clickedlink(item.link)">
-            Goto link
+            <i class="fas fa-link"></i>
           </button>
           <button class="card-btn" @click="deletebtn(item.index)">
-            Delete
+            <i class="fas fa-trash"></i>
           </button>
         </div>
       </div>
@@ -116,6 +116,7 @@ export default {
 .card-wrap:hover {
   transform: scale(1.1);
 }
+
 .card-header {
   display: grid;
   height: auto;
@@ -148,6 +149,7 @@ export default {
   margin-bottom: 20px;
 }
 .card-btn {
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
   border: none;
   border-radius: 100px;
@@ -155,6 +157,15 @@ export default {
   color: #fff;
   margin-bottom: 15px;
   text-transform: uppercase;
+}
+.card-btn:hover {
+  transform: scale(1.1);
+  background: linear-gradient(
+    90deg,
+    rgb(7, 63, 78) 0%,
+    rgb(7, 49, 42) 0%,
+    rgb(50, 177, 147) 100%
+  );
 }
 .card-header {
   background: linear-gradient(

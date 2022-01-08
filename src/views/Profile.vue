@@ -5,7 +5,7 @@
       <div class="container">
         <p class="title">Profile</p>
         <div class="iconandusername">
-          <div class="profilepicture" @click="choose_image_overlay">
+          <div class="profilepicture" v-show="display_image_after_loading === true"  @click="choose_image_overlay">
             <input
               type="file"
               ref="image_input"
@@ -172,6 +172,7 @@ export default {
       bio: "",
       image: "",
       imageData: null,
+      display_image_after_loading: false,
     };
   },
 
@@ -184,10 +185,13 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+ 
+  },
   created() {
     this.retrieveEmail();
     this.retrieveUsernameBioImage();
+       
   },
 
   methods: {
@@ -216,6 +220,7 @@ export default {
               this.image = snapshot.val().photo;
               this.$store.dispatch("actionLoading", false);
             }
+            this.display_image_after_loading = true;
           });
       }
     },
@@ -406,8 +411,10 @@ img {
   height: 50px;
   margin: auto 20px;
   object-position: center;
+  border-radius: 50px;
 }
 .avataroverlay {
+  border-radius: 50px;
   cursor: pointer;
   position: absolute;
   left: 0;
