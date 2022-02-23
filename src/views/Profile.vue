@@ -22,13 +22,7 @@
           </div>
           <div class="usernameandcopytoclipboard">
             <p>{{ username }}</p>
-            <input
-              ref="myinput"
-              readonly
-              style="position: absolute;
-  left: -999px;"
-              :value="text_to_copy"
-            />
+            <input ref="myinput" style="display: none" :value="text_to_copy" />
             <a @click="copyToClipboard">
               <i class="far fa-clipboard"></i>
             </a>
