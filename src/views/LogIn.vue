@@ -100,7 +100,7 @@ export default {
     validate() {
       if (!this.email || !this.password) {
         this.$store.dispatch("actionSnackbar", {
-          content: "Both email and password is required",
+          content: "Both email and password are required",
           type: "error",
         });
         return;

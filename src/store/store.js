@@ -9,7 +9,13 @@ const store = new Vuex.Store({
     user: {},
     auth: false,
     links: [],
-    linkview_items: { links: [], username: "", bio: "", email: "", image_url: "" },
+    linkview_items: {
+      links: [],
+      username: "",
+      bio: null,
+      email: "",
+      image_url: null,
+    },
     loading: false,
     snackbar: {
       content: null,
@@ -63,7 +69,7 @@ const store = new Vuex.Store({
               .once("value", (Snapshot) => {
                 (this.state.linkview_items.bio = Snapshot.val().bio),
                   (this.state.linkview_items.username = Snapshot.val().username);
-                  this.state.linkview_items.image_url = Snapshot.val().photo;
+                this.state.linkview_items.image_url = Snapshot.val().photo;
 
                 commit("setLoading", false);
                 if (Snapshot.val().urls != null) {

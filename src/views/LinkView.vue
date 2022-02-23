@@ -4,17 +4,21 @@
     <div class="container">
       <div class="card">
         <div class="profile_details">
-          <p class="title">Profile</p>
           <div class="imgandusername">
-            <img  alt="" :src="imageUrl" />
+            <span v-if="linkview_items.image_url != null">
+              <img alt="" :src="linkview_items.image_url" />
+            </span>
+            <span v-else class="profileimageicon">
+              <i class="fas fa-link"></i>
+            </span>
             <p>{{ linkview_items.username }}</p>
           </div>
           <div class="email">
             <p>{{ linkview_items.email }}</p>
           </div>
-          <div class="bio">
+          <span v-if="linkview_items.bio != null">
             <p>"{{ linkview_items.bio }}"</p>
-          </div>
+          </span>
         </div>
       </div>
       <div class="link_card_container">
@@ -45,8 +49,6 @@ export default {
   },
   data() {
     return {
-      url:
-        "https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light",
       linkview_items: this.$store.state.linkview_items,
       userid: "",
       userIdOfUsername: "",
@@ -57,6 +59,7 @@ export default {
       if (this.linkview_items.image_url != null) {
         return this.linkview_items.image_url;
       } else {
+        console.log(this.url);
         return this.url;
       }
     },
@@ -116,9 +119,19 @@ export default {
   margin-bottom: 10px;
 }
 .imgandusername img {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   border-radius: 50px;
+}
+.profileimageicon {
+  width: 65px;
+  height: 65px;
+  border-radius: 50px;
+}
+.profileimageicon i {
+  margin: auto;
+  color: #fff;
+  font-size: 72px;
 }
 .imgandusername p {
   align-self: center;

@@ -5,7 +5,7 @@
       <div class="container">
         <p class="title">Profile</p>
         <div class="iconandusername">
-          <div class="profilepicture" v-show="display_image_after_loading === true"  @click="choose_image_overlay">
+          <div class="profilepicture" @click="choose_image_overlay">
             <input
               type="file"
               ref="image_input"
@@ -13,15 +13,26 @@
               @change="previewImage"
               accept="image/*"
             />
-            <div class="image">
-              <img class="" alt="" :src="imageUrl" />
-            </div>
+            <span v-if="image != null">
+              <img alt="" :src="image" />
+            </span>
             <div class="avataroverlay">
               <i class="fas fa-edit"> </i>
             </div>
           </div>
-
-          <p>{{ username }}</p>
+          <div class="usernameandcopytoclipboard">
+            <p>{{ username }}</p>
+            <input
+              ref="myinput"
+              readonly
+              style="position: absolute;
+  left: -999px;"
+              :value="text_to_copy"
+            />
+            <a @click="copyToClipboard">
+              <i class="far fa-clipboard"></i>
+            </a>
+          </div>
         </div>
         <div class="bio">
           <textarea
@@ -170,13 +181,16 @@ export default {
       username: "",
       email: "",
       bio: "",
-      image: "",
+      image: null,
       imageData: null,
       display_image_after_loading: false,
     };
   },
 
   computed: {
+    text_to_copy() {
+      return "http://" + window.location.host + "/" + this.username;
+    },
     imageUrl() {
       if (this.image != null) {
         return this.image;
@@ -185,16 +199,21 @@ export default {
       }
     },
   },
-  mounted() {
- 
-  },
+  mounted() {},
   created() {
     this.retrieveEmail();
     this.retrieveUsernameBioImage();
-       
   },
 
   methods: {
+    copyToClipboard() {
+      this.$refs.myinput.select();
+      document.execCommand("copy");
+      this.$store.dispatch("actionSnackbar", {
+        content: "copied to clipboard",
+        type: "success",
+      });
+    },
     retrieveEmail() {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -407,8 +426,8 @@ p {
   position: relative;
 }
 img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   margin: auto 20px;
   object-position: center;
   border-radius: 50px;
@@ -421,15 +440,17 @@ img {
   right: 0;
   top: 0;
   bottom: 0;
-  opacity: 0.3;
+  opacity: 0.1;
   background: transparent;
-  margin: auto;
-  width: 50px;
-  height: 50px;
+  margin: auto 20px;
+  width: 60px;
+  height: 60px;
   display: grid;
 }
 .avataroverlay:hover {
-  background: linear-gradient(to right, #8e9eab, #eef2f3);
+  filter: blur(0.4px);
+  background: linear-gradient(to right, #676869, #363636);
+  opacity: 0.8;
 }
 .avataroverlay i {
   margin: auto;
@@ -446,9 +467,18 @@ img {
   margin-top: 20px;
 }
 .iconandusername p {
-  font-size: 30px;
+  font-size: 25px;
   color: #45494d;
   margin: auto 20px;
+}
+.usernameandcopytoclipboard {
+  display: flex;
+  flex-direction: row;
+  margin-right: 20px;
+}
+.usernameandcopytoclipboard a {
+  align-self: center;
+  font-size: 26px;
 }
 .bio {
   margin: 15px 0px;
