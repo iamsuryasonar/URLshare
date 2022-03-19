@@ -6,6 +6,7 @@
         <ul @keyup.enter="register">
           <li class="list_items">
             <input
+              class="textsize"
               placeholder="Username"
               v-model="username"
               type="text"
@@ -16,6 +17,7 @@
           </li>
           <li class="list_items">
             <input
+              class="textsize"
               placeholder="Email"
               v-model="email"
               type="email"
@@ -26,6 +28,7 @@
           </li>
           <li class="list_items">
             <input
+              class="textsize"
               placeholder="Password"
               v-model="password"
               type="password"
@@ -37,7 +40,7 @@
           <li class="list_items">
             <div class="loginandalreadyuser">
               <button @click="register">Register</button>
-              <router-link to="/LogIn">Already have an account</router-link>
+              <router-link to="/LogIn">Already have an account?</router-link>
             </div>
           </li>
         </ul>
@@ -94,14 +97,14 @@ export default {
       firebase
         .database()
         .ref("usernames/")
-        .child(this.username)
+        .child(this.username.trim())
         .once("value", (snapshot) => {
           if (!snapshot.exists()) {
             this.$store
               .dispatch("signUserUp", {
                 email: this.email,
                 password: this.password,
-                username: this.username,
+                username: this.username.trim(),
               })
               .then(() => {
                 (this.email = ""), (this.password = ""), (this.username = "");
@@ -212,11 +215,17 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
+  align-self: center;
 }
 li {
   margin: 2%;
   width: 100%;
 }
+.textsize {
+  font-size: 22px;
+}
+
 @media only screen and (max-width: 700px) {
   .wrapper {
     height: 80vh;
@@ -228,6 +237,9 @@ li {
   li {
     margin: 2%;
     width: 100%;
+  }
+  .textsize {
+    font-size: 16px;
   }
 }
 </style>

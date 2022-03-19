@@ -123,6 +123,14 @@ export default {
   width: 25%;
   border-radius: 100% 50% 50% 0% / 0% 0% 100% 100%;
 }
+.card-header {
+  background: linear-gradient(
+    90deg,
+    rgba(4, 43, 54, 1) 0%,
+    rgba(2, 105, 88, 1) 0%,
+    rgba(45, 209, 171, 1) 100%
+  );
+}
 
 .card-header i {
   margin: auto;
@@ -139,13 +147,13 @@ export default {
 .card-title {
   text-align: center;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 24px;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 .card-text {
   text-align: center;
-  font-size: 12px;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 .card-btn {
@@ -165,14 +173,6 @@ export default {
     rgb(7, 63, 78) 0%,
     rgb(7, 49, 42) 0%,
     rgb(50, 177, 147) 100%
-  );
-}
-.card-header {
-  background: linear-gradient(
-    90deg,
-    rgba(4, 43, 54, 1) 0%,
-    rgba(2, 105, 88, 1) 0%,
-    rgba(45, 209, 171, 1) 100%
   );
 }
 
@@ -201,10 +201,13 @@ export default {
   }
   .card-title {
     margin-bottom: 10px;
+    font-size: 18px;
   }
   .card-text {
     margin-bottom: 10px;
+    font-size: 16px;
   }
+
   .card-btn {
     margin-bottom: 10px;
   }

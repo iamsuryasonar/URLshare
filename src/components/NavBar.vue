@@ -9,6 +9,7 @@
           <div class="navigation-items">
             <div v-if="isonline">
               <a
+                class="textsize"
                 v-for="item in onlinenavitem"
                 :key="item.icon"
                 :href="item.link"
@@ -18,6 +19,7 @@
             </div>
             <div v-if="isoffline">
               <a
+                class="textsize"
                 v-for="item in offlinenavitem"
                 :key="item.icon"
                 :href="item.link"
@@ -28,6 +30,7 @@
           </div>
           <div class="searchinputandicon">
             <input
+              class="textsize"
               placeholder="Username"
               type="text"
               name="Username"
@@ -56,6 +59,7 @@
         <div class="menucontents">
           <div v-if="isonline">
             <a
+              class="textsize2"
               v-for="item in onlinenavitem"
               :key="item.icon"
               :href="item.link"
@@ -66,6 +70,7 @@
           </div>
           <div v-if="isoffline">
             <a
+              class="textsize2"
               v-for="item in offlinenavitem"
               :key="item.icon"
               :href="item.link"
@@ -127,7 +132,7 @@ export default {
       {
         icon: "delete",
         link: "/DeleteLinkView",
-        text: "Delete Link",
+        text: "My Link",
         name: "DeleteLinkView",
         online: "true",
       },
@@ -158,9 +163,10 @@ export default {
       if (!this.username) {
         return;
       }
+      this.username = this.username.trim();
       if (this.$router.currentRoute.name !== "LinkView") {
         this.$router
-          .replace({ name: "LinkView", params: { username: this.username } })
+          .replace({ name: "LinkView", params: { username: this.username} })
           .catch((error) => {
             console.log(error.name);
           });
@@ -202,7 +208,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 99;
+  z-index: 990;
 }
 .logotitle {
   font-size: 30px;
@@ -268,7 +274,12 @@ i:hover {
 }
 .menuiconwrapper {
   display: none;
-  margin: auto;
+  margin: auto; 
+}
+.menuiconwrapper i{
+  width: 20px;
+  height: 20px;
+  margin: auto 10px;
 }
 
 #menuclosebutton,
@@ -285,8 +296,8 @@ i:hover {
   position: fixed;
   height: 250px;
   width: 100vw;
-  background-color: rgb(53, 52, 52);
-  z-index: 99;
+  background-color: #383d41e0;
+  z-index: 990;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -318,6 +329,9 @@ i:hover {
   font-size: 2rem;
   color: white;
 }
+.textsize {
+    font-size: 22px;
+  }
 
 @media only screen and (max-width: 900px) {
   .navigation-items {
@@ -346,6 +360,12 @@ i:hover {
   #menuclosebutton,
   #menuopenbutton {
     font-size: 2rem;
+  }
+  .textsize {
+    font-size: 18px;
+  }
+  .textsize2 {
+    font-size: 28px;
   }
 }
 </style>

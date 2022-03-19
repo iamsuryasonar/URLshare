@@ -3,8 +3,7 @@
     <div class="descriptionandbutton">
       <p class="title">URLshare</p>
       <p class="description">
-        A URL sharing platform, One URL that contains all of your URL's in one
-        place
+        One link for every other links. Now Share all your links by your user name.
       </p>
       <div class="buttonandatag">
         <button @click="getstarted">Get Started</button>

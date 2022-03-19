@@ -11,13 +11,13 @@
             <span v-else class="profileimageicon">
               <i class="fas fa-link"></i>
             </span>
-            <p>{{ linkview_items.username }}</p>
+            <p class="username">{{ linkview_items.username }}</p>
           </div>
           <div class="email">
-            <p>{{ linkview_items.email }}</p>
+            <p class="email">{{ linkview_items.email }}</p>
           </div>
           <span v-if="linkview_items.bio != null">
-            <p>"{{ linkview_items.bio }}"</p>
+            <p class="bio">"{{ linkview_items.bio }}"</p>
           </span>
         </div>
       </div>
@@ -99,7 +99,8 @@ export default {
 .card {
   margin: 20px auto;
   width: 40%;
-  padding: 20px;
+  height: auto;
+  padding: 25px;
   border-radius: 20px;
   background: linear-gradient(
     90deg,
@@ -119,14 +120,14 @@ export default {
   margin-bottom: 10px;
 }
 .imgandusername img {
-  width: 65px;
-  height: 65px;
-  border-radius: 50px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
 }
 .profileimageicon {
-  width: 65px;
-  height: 65px;
-  border-radius: 50px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
 }
 .profileimageicon i {
   margin: auto;
@@ -142,8 +143,13 @@ export default {
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.bio {
-  text-align: justify;
+.bio,
+.email {
+  /* text-align: justify; */
+  font-size: 20px;
+}
+.username {
+  font-size: 24px;
 }
 .link_card_container {
   min-width: 60%;
@@ -195,13 +201,13 @@ export default {
 .card-title {
   text-align: center;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 24px;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 .card-text {
   text-align: center;
-  font-size: 12px;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 @media only screen and (max-width: 900px) {
@@ -233,5 +239,27 @@ export default {
   .card-wrap {
     margin: 10px auto;
   }
+  .bio,
+  .email {
+    /* text-align: justify; */
+    font-size: 16px;
+  }
+  .username {
+    font-size: 20px;
+  }
+  .card-title {
+    font-size: 18px;
+  }
+  .card-text {
+    font-size: 16px;
+  }
+  .imgandusername img {
+  width: 100px;
+  height: 100px;
+}
+.profileimageicon {
+  width: 100px;
+  height: 100px;
+}
 }
 </style>

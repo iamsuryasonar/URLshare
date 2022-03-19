@@ -6,6 +6,7 @@
         <ul @keyup.enter="validate">
           <li class="list_items">
             <input
+            class="textsize"
               placeholder="Email"
               v-model="email"
               type="email"
@@ -16,6 +17,7 @@
           </li>
           <li class="list_items">
             <input
+            class="textsize"
               placeholder="Password"
               v-model="password"
               type="password"
@@ -253,6 +255,8 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
+  align-self: center;
 }
 li {
   margin: 2%;
@@ -290,6 +294,9 @@ a:hover {
   justify-content: space-between;
   margin-top: 20px;
 }
+ .textsize{
+    font-size: 22px;
+  }
 @media only screen and (max-width: 700px) {
   .wrapper {
     height: 80vh;
@@ -301,6 +308,9 @@ a:hover {
   li {
     margin: 2%;
     width: 100%;
+  }
+   .textsize{
+    font-size: 16px;
   }
 }
 </style>

@@ -12,10 +12,12 @@
             autocomplete="off"
             required
             v-model="items.title"
+            class="textsize"
           />
         </li>
         <li class="list_items">
           <textarea
+          class="textsize"
             rows="5"
             placeholder="Description"
             v-model="items.description"
@@ -27,6 +29,7 @@
         </li>
         <li class="list_items">
           <input
+          class="textsize"
             placeholder="Url"
             type="text"
             name="Title"
@@ -222,11 +225,17 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: center;
+
+  width: 80%;
 }
 li {
   margin: 2%;
   width: 100%;
 }
+.textsize{
+    font-size: 24px;
+  }
 @media only screen and (max-width: 700px) {
   .wrapper {
     height: 80vh;
@@ -238,6 +247,9 @@ li {
   li {
     margin: 2%;
     width: 100%;
+  }
+  .textsize{
+    font-size: 18px;
   }
 }
 </style>

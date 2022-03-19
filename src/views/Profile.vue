@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="usernameandcopytoclipboard">
-            <p>{{ username }}</p>
+            <p class="textsize">{{ username }}</p>
             <input
               ref="myinput"
               readonly
@@ -42,17 +42,18 @@
             id=""
             cols="30"
             rows="4"
+            class="textsize"
           ></textarea>
           <button @click="save_bio">Save bio</button>
         </div>
         <div class="emailandediticon">
-          <p>{{ email }}</p>
+          <p class="textsize">{{ email }}</p>
           <a @click="emailoverlay = !emailoverlay">
             <i class="fas fa-edit"></i
           ></a>
         </div>
         <div class="passwordandediticon">
-          <p>Password</p>
+          <p class="textsize">Password</p>
           <a @click="passwordoverlay = !passwordoverlay">
             <i class="fas fa-edit"></i
           ></a>
@@ -399,6 +400,7 @@ p {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .wrapper {
@@ -426,14 +428,14 @@ p {
   position: relative;
 }
 img {
-  width: 60px;
-  height: 60px;
+  width: 140px;
+  height: 140px;
   margin: auto 20px;
   object-position: center;
-  border-radius: 50px;
+  border-radius: 50%;
 }
 .avataroverlay {
-  border-radius: 50px;
+  border-radius: 50%;
   cursor: pointer;
   position: absolute;
   left: 0;
@@ -443,8 +445,8 @@ img {
   opacity: 0.1;
   background: transparent;
   margin: auto 20px;
-  width: 60px;
-  height: 60px;
+  width: 140px;
+  height: 140px;
   display: grid;
 }
 .avataroverlay:hover {
@@ -596,16 +598,50 @@ i:hover {
   flex-direction: row;
   justify-content: space-between;
 }
-
+.textsize {
+  font-size: 22px;
+}
+@media only screen and (max-width: 1100px) {
+  .iconandusername p {
+    font-size: 22px;
+  }
+  .textsize {
+    font-size: 18px;
+  }
+  img {
+    width: 100px;
+    height: 100px;
+  }
+  .avataroverlay {
+    width: 100px;
+    height: 100px;
+  }
+  .wrapper {
+    height: 80vh;
+    width: auto;
+    padding: 20%;
+  }
+}
 @media only screen and (max-width: 700px) {
   .wrapper {
     height: 80vh;
     width: auto;
-    padding: 10%;
+    padding: 4%;
     margin: auto;
   }
   .iconandusername p {
-    font-size: 24px;
+    font-size: 18px;
+  }
+  .textsize {
+    font-size: 16px;
+  }
+  img {
+    width: 70px;
+    height: 70px;
+  }
+  .avataroverlay {
+    width: 70px;
+    height: 70px;
   }
 }
 </style>
