@@ -32,9 +32,15 @@ export default {
     return {
       items: this.$store.state.links,
       username: "",
+      current_userid: "",
     };
   },
   created() {
+    this.$store.dispatch("actionLoading", {
+      loading: true,
+    });
+    console.log(this.$store.state);
+    this.current_userid = firebase.auth().currentUser.uid;
     this.getData();
   },
 
@@ -46,7 +52,7 @@ export default {
       });
       firebase
         .database()
-        .ref("users/" + firebase.auth().currentUser.uid)
+        .ref("users/" + this.current_userid)
         .once("value", (snapshot) => {
           if (snapshot != null) {
             this.$store.dispatch("getLinks", {
@@ -62,9 +68,7 @@ export default {
     deletebtn(index) {
       firebase
         .database()
-        .ref(
-          "users/" + firebase.auth().currentUser.uid + "/urls/" + index + "/"
-        )
+        .ref("users/" + this.current_userid + "/urls/" + index + "/")
         .remove()
         .then(() => {
           this.$store.dispatch("actionSnackbar", {

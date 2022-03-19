@@ -36,12 +36,17 @@ const router = new VueRouter({
     {
       path: "/",
       component: () =>
-        import(/* webpackPrefetch: true */ /* webpackChunkName: “unauth” */"./views/Welcome.vue"),
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “unauth” */ "./views/Welcome.vue"
+        ),
       beforeEnter: guardwhenonline,
     },
     {
       path: "/LogIn",
-      component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: “unauth” */"./views/LogIn.vue"),
+      component: () =>
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “unauth” */ "./views/LogIn.vue"
+        ),
       name: "LogIn",
       title: "Log In",
       meta: {
@@ -53,7 +58,9 @@ const router = new VueRouter({
     {
       path: "/Register",
       component: () =>
-        import(/* webpackPrefetch: true */ /* webpackChunkName: “unauth” */ "./views/Register.vue"),
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “unauth” */ "./views/Register.vue"
+        ),
       name: "Register",
       title: "Register",
       meta: {
@@ -64,7 +71,9 @@ const router = new VueRouter({
     {
       path: "/DeleteLinkView",
       component: () =>
-        import(/* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/DeleteLinkView.vue"),
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/DeleteLinkView.vue"
+        ),
       name: "DeleteLinkView",
       title: "Delete Links",
       meta: {
@@ -75,7 +84,9 @@ const router = new VueRouter({
     {
       path: "/AddLinkView",
       component: () =>
-        import(/* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/AddLinkView.vue"),
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/AddLinkView.vue"
+        ),
       name: "AddLinkView",
       title: "Add Links",
       meta: {
@@ -86,7 +97,9 @@ const router = new VueRouter({
     {
       path: "/Profile",
       component: () =>
-        import(/* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/Profile.vue"),
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/Profile.vue"
+        ),
       name: "Profile",
       title: "Profile",
       meta: {
@@ -97,7 +110,9 @@ const router = new VueRouter({
     {
       path: "/:username",
       component: () =>
-        import(/* webpackPrefetch: true */ /* webpackChunkName: “unauth” */"./views/LinkView.vue"),
+        import(
+          /* webpackPrefetch: true */ /* webpackChunkName: “unauth” */ "./views/LinkView.vue"
+        ),
       name: "LinkView",
     },
   ],

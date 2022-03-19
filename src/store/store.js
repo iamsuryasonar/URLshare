@@ -210,6 +210,7 @@ const store = new Vuex.Store({
       //     email: payload.email,
       // })
       commit("setAuth", true);
+      // commit("setUser", payload);
     },
     logout({ commit }) {
       commit("setLoading", true);

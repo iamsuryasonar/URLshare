@@ -16,11 +16,11 @@ export default {
     NavBar,
     Spinner,
   },
-  computed: {
+  computed: {},
+  methods: {},
+  created() {
     
   },
-  methods: {},
-  created() {},
 };
 </script>
 <style></style>
