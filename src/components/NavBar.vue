@@ -9,6 +9,15 @@
           <div class="navigation-items">
             <div v-if="isonline">
               <a
+                class=" activenavitem"
+                v-for="item in onlineactivenavitem"
+                :key="item.icon"
+                :href="item.link"
+                :title="item.title"
+              >
+                {{ item.text }}
+              </a>
+              <a
                 class="textsize"
                 v-for="item in onlinenavitem"
                 :key="item.icon"
@@ -18,6 +27,15 @@
               >
             </div>
             <div v-if="isoffline">
+              <a
+                class=" activenavitem"
+                v-for="item in offlineactivenavitem"
+                :key="item.icon"
+                :href="item.link"
+                :title="item.title"
+              >
+                {{ item.text }}
+              </a>
               <a
                 class="textsize"
                 v-for="item in offlinenavitem"
@@ -59,6 +77,15 @@
         <div class="menucontents">
           <div v-if="isonline">
             <a
+              class="menuactivenavitem"
+              v-for="item in onlineactivenavitem"
+              :key="item.icon"
+              :href="item.link"
+              :title="item.title"
+            >
+              <p @click="menu = !menu">{{ item.text }}</p>
+            </a>
+            <a
               class="textsize2"
               v-for="item in onlinenavitem"
               :key="item.icon"
@@ -69,6 +96,15 @@
             </a>
           </div>
           <div v-if="isoffline">
+            <a
+              class=" menuactivenavitem"
+              v-for="item in offlineactivenavitem"
+              :key="item.icon"
+              :href="item.link"
+              :title="item.title"
+            >
+              <p @click="menu = !menu">{{ item.text }}</p>
+            </a>
             <a
               class="textsize2"
               v-for="item in offlinenavitem"
@@ -86,7 +122,7 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 import Vue from "vue";
 
 Vue.directive("click-outside", {
@@ -131,9 +167,9 @@ export default {
       },
       {
         icon: "delete",
-        link: "/DeleteLinkView",
+        link: "/MyLinks",
         text: "My Link",
-        name: "DeleteLinkView",
+        name: "MyLinks",
         online: "true",
       },
     ],
@@ -166,7 +202,7 @@ export default {
       this.username = this.username.trim();
       if (this.$router.currentRoute.name !== "LinkView") {
         this.$router
-          .replace({ name: "LinkView", params: { username: this.username} })
+          .replace({ name: "LinkView", params: { username: this.username } })
           .catch((error) => {
             console.log(error.name);
           });
@@ -179,8 +215,14 @@ export default {
   },
 
   computed: {
+    onlineactivenavitem() {
+      return this.onlinenav.filter((item) => item.name == this.$route.name);
+    },
     onlinenavitem() {
       return this.onlinenav.filter((item) => item.name != this.$route.name);
+    },
+    offlineactivenavitem() {
+      return this.offlinenav.filter((item) => item.name == this.$route.name);
     },
     offlinenavitem() {
       return this.offlinenav.filter((item) => item.name != this.$route.name);
@@ -211,7 +253,10 @@ export default {
   z-index: 990;
 }
 .logotitle {
-  font-size: 30px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  letter-spacing: 2px;
+  font-size: 26px;
   margin-right: 20px;
 }
 .searchinputandicon {
@@ -231,6 +276,8 @@ input {
 input::placeholder {
   opacity: 0.56;
   color: black;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
 }
 
 input:hover {
@@ -255,6 +302,7 @@ i {
 }
 .searchandnavigationitems a {
   margin: auto 20px;
+  font-family: "Montserrat", sans-serif;
 }
 a {
   cursor: pointer;
@@ -274,9 +322,9 @@ i:hover {
 }
 .menuiconwrapper {
   display: none;
-  margin: auto; 
+  margin: auto;
 }
-.menuiconwrapper i{
+.menuiconwrapper i {
   width: 20px;
   height: 20px;
   margin: auto 10px;
@@ -310,7 +358,7 @@ i:hover {
   justify-content: center;
   align-items: center;
 }
-.menucontents a {
+a{
   text-decoration: none;
   color: white;
 }
@@ -330,10 +378,15 @@ i:hover {
   color: white;
 }
 .textsize {
-    font-size: 22px;
-  }
+  font-size: 18px;
+}
+.activenavitem {
+  color: rgb(45, 209, 154);
+  font-weight: bolder;
+  font-size: 18px;
+}
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 960px) {
   .navigation-items {
     display: none;
   }
@@ -363,8 +416,16 @@ i:hover {
   }
   .textsize {
     font-size: 18px;
+    font-family: "Montserrat", sans-serif;
   }
   .textsize2 {
+    font-size: 28px;
+    font-family: "Montserrat", sans-serif;
+  }
+  .menuactivenavitem {
+    font-family: "Montserrat", sans-serif;
+    color: rgb(45, 209, 154);
+    font-weight: bolder;
     font-size: 28px;
   }
 }

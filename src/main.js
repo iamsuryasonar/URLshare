@@ -10,10 +10,6 @@ import "firebase/auth"
 /* Initialize firebase with your configuration */
 firebase.initializeApp(firebaseConfig);
 
-// firebase.analytics();
-
-/* Bind firebase to your Vue instance */
-// Vue.prototype.$firebase = firebase;
 
 Vue.config.productionTip = false;
 

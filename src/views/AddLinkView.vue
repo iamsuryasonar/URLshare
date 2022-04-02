@@ -2,8 +2,9 @@
   <div>
     <div class="wrapper">
       <Snackbar></Snackbar>
+      <div class="border"></div>
       <ul @keyup.enter="addLink">
-        <div class="title"><p>Add new link</p></div>
+        <!-- <div class="title"><p>Add new link</p></div> -->
         <li class="list_items">
           <input
             placeholder="Title"
@@ -17,8 +18,8 @@
         </li>
         <li class="list_items">
           <textarea
-          class="textsize"
-            rows="5"
+            class="textsize"
+            rows="4"
             placeholder="Description"
             v-model="items.description"
             autocomplete="off"
@@ -29,7 +30,7 @@
         </li>
         <li class="list_items">
           <input
-          class="textsize"
+            class="textsize"
             placeholder="Url"
             type="text"
             name="Title"
@@ -49,7 +50,7 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 import Snackbar from "../components/Snackbar.vue";
 export default {
   components: {
@@ -144,13 +145,13 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
 html {
   background-color: #151515;
 }
 
 * {
+  font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -159,10 +160,11 @@ html {
 .wrapper {
   width: 70%;
   margin: auto;
-  height: 90vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 .title p {
   color: #2e2e2e;
@@ -174,7 +176,7 @@ li,
 button {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 19px;
   color: aliceblue;
   text-decoration: none;
 }
@@ -195,11 +197,11 @@ input::placeholder {
   color: black;
 }
 
-input:hover {
+input:hover, textarea:hover {
   border-color: yellow;
 }
 
-input:focus {
+input:focus, textarea:focus {
   outline: none;
   border: 1px solid transparent;
   box-shadow: 0px 0px 1px 1px yellow;
@@ -226,29 +228,47 @@ ul {
   flex-direction: column;
   align-items: center;
   align-self: center;
-
   width: 80%;
 }
 li {
   margin: 2%;
   width: 100%;
 }
-.textsize{
-    font-size: 24px;
+.textsize {
+  font-size: 19px;
+}
+@media only screen and (max-width: 1100px) and (min-width: 701px) {
+  .wrapper {
+    height: 100vh;
+    width: 85%;
+    padding: 0;
+    margin: auto;
   }
+  ul {
+    width: 95%;
+  }
+  li {
+    width: 100%;
+  }
+  .textsize {
+    font-size: 18px;
+  }
+}
 @media only screen and (max-width: 700px) {
   .wrapper {
-    height: 80vh;
-    width: auto;
-    padding: 10%;
+    height: 90vh;
+    width: 100%;
+    padding: 0;
     margin: auto;
+  }
+  ul {
+    width: 95%;
   }
 
   li {
-    margin: 2%;
     width: 100%;
   }
-  .textsize{
+  .textsize {
     font-size: 18px;
   }
 }

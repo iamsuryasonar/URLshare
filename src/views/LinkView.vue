@@ -118,6 +118,7 @@ export default {
   font-size: 20px;
   align-self: center;
   margin-bottom: 10px;
+  font-family: "Montserrat", sans-serif;
 }
 .imgandusername img {
   width: 160px;
@@ -136,6 +137,7 @@ export default {
 }
 .imgandusername p {
   align-self: center;
+  font-family: "Montserrat", sans-serif;
 }
 .imgandusername {
   display: flex;
@@ -145,8 +147,8 @@ export default {
 }
 .bio,
 .email {
-  /* text-align: justify; */
   font-size: 20px;
+  font-family: "Montserrat", sans-serif;
 }
 .username {
   font-size: 24px;
@@ -199,6 +201,7 @@ export default {
   margin: 16px auto;
 }
 .card-title {
+  font-family: "Montserrat", sans-serif;
   text-align: center;
   text-transform: uppercase;
   font-size: 24px;
@@ -206,11 +209,36 @@ export default {
   margin-bottom: 20px;
 }
 .card-text {
+  font-family: "Montserrat", sans-serif;
   text-align: center;
   font-size: 18px;
   margin-bottom: 20px;
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1100px) and (min-width: 701px) {
+  .bio,
+  .email {
+    /* text-align: justify; */
+    font-size: 16px;
+  }
+  .username {
+    font-size: 20px;
+  }
+  .card-title {
+    font-size: 18px;
+  }
+  .card-text {
+    font-size: 16px;
+  }
+  .imgandusername img {
+    width: 100px;
+    height: 100px;
+  }
+  .profileimageicon {
+    width: 100px;
+    height: 100px;
+  }
+}
+@media only screen and (max-width: 700px) {
   .main {
     width: 100%;
     margin: 2% auto;
@@ -254,12 +282,12 @@ export default {
     font-size: 16px;
   }
   .imgandusername img {
-  width: 100px;
-  height: 100px;
-}
-.profileimageicon {
-  width: 100px;
-  height: 100px;
-}
+    width: 100px;
+    height: 100px;
+  }
+  .profileimageicon {
+    width: 100px;
+    height: 100px;
+  }
 }
 </style>

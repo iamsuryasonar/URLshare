@@ -68,12 +68,12 @@ const router = new VueRouter({
       beforeEnter: guardwhenonline,
     },
     {
-      path: "/DeleteLinkView",
+      path: "/MyLinks",
       component: () =>
         import(
-          /* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/DeleteLinkView.vue"
+          /* webpackPrefetch: true */ /* webpackChunkName: “auth” */ "./views/MyLinks.vue"
         ),
-      name: "DeleteLinkView",
+      name: "MyLinks",
       title: "Delete Links",
       meta: {
         authRequired: true,

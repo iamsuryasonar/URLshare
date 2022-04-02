@@ -121,32 +121,36 @@ export default {
 };
 </script>
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
 html {
   background-color: #151515;
 }
 
 * {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 .wrapper {
-  width: 70%;
+  width: 60%;
   margin: auto;
   height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+.overlaycontainer {
+  position: relative;
+}
 .container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.loginandalreadyuser {
+.loginandforgotpassword {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -160,15 +164,9 @@ button {
   color: aliceblue;
   text-decoration: none;
 }
-a {
+p {
+  font-size: 16px;
   align-self: center;
-  text-decoration-line: none;
-  color: black;
-  font-size: 14px;
-}
-a:hover {
-  color: rgb(45, 209, 154);
-  border-bottom: 2px solid #e4e403;
 }
 .list_items {
   list-style: none;
@@ -222,10 +220,63 @@ li {
   margin: 2%;
   width: 100%;
 }
+a {
+  cursor: pointer;
+  text-decoration-line: none;
+  color: black;
+  font-size: 15px;
+}
+a:hover {
+  color: rgb(45, 209, 154);
+  border-bottom: 2px solid #e4e403;
+}
+.forgotpasswordoverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to right, #8e9eab, #eef2f3);
+}
+.forgotpasswordoverlay ul {
+  width: 90%;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0%;
+}
+.overlaybuttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
 .textsize {
-  font-size: 22px;
+  font-size: 20px;
+}
+.loginandalreadyuser{
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
+@media only screen and (max-width: 1100px) and (min-width: 701px) {
+  .wrapper {
+    width: 100%;
+    height: 90vh;
+    padding: 10%;
+    margin: auto;
+  }
+
+  li {
+    margin: 2%;
+    width: 100%;
+  }
+  .textsize {
+    font-size: 18px;
+  }
+}
 @media only screen and (max-width: 700px) {
   .wrapper {
     height: 80vh;

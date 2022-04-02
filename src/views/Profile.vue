@@ -3,7 +3,7 @@
     <Snackbar></Snackbar>
     <div class="overlaycontainer" v-click-outside="onClickOutside">
       <div class="container">
-        <p class="title">Profile</p>
+        <!-- <p class="title">Profile</p> -->
         <div class="iconandusername">
           <div class="profilepicture" @click="choose_image_overlay">
             <input
@@ -384,12 +384,10 @@ export default {
           });
         });
     },
-    //------------------------------------------------->
   },
 };
 </script>
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
 html {
   background-color: #151515;
@@ -404,7 +402,7 @@ p {
 }
 
 .wrapper {
-  width: 40%;
+  width: 50%;
   height: 90vh;
   margin: auto;
   display: flex;
@@ -423,6 +421,7 @@ p {
   color: #2e2e2e;
   margin: auto;
   font-size: 30px;
+  font-family: "Montserrat", sans-serif;
 }
 .profilepicture {
   position: relative;
@@ -472,6 +471,7 @@ img {
   font-size: 25px;
   color: #45494d;
   margin: auto 20px;
+  font-family: "Montserrat", sans-serif;
 }
 .usernameandcopytoclipboard {
   display: flex;
@@ -486,12 +486,14 @@ img {
   margin: 15px 0px;
 }
 .bio textarea {
+  font-family: "Montserrat", sans-serif;
   width: 100%;
   margin: auto;
   padding: 5px;
   background-color: transparent;
 }
 .bio button {
+  font-family: "Montserrat", sans-serif;
   width: 100%;
   margin: auto;
   margin-top: 10px;
@@ -551,7 +553,6 @@ ul {
 li,
 button {
   font-family: "Montserrat", sans-serif;
-  font-weight: 500;
   font-size: 18px;
   color: aliceblue;
   text-decoration: none;
@@ -600,8 +601,10 @@ i:hover {
 }
 .textsize {
   font-size: 22px;
+  font-family: "Montserrat", sans-serif;
 }
-@media only screen and (max-width: 1100px) {
+
+@media only screen and (max-width: 1100px) and (min-width: 701px)  {
   .iconandusername p {
     font-size: 22px;
   }
@@ -617,10 +620,11 @@ i:hover {
     height: 100px;
   }
   .wrapper {
-    height: 80vh;
-    width: auto;
-    padding: 20%;
+    height: 100%;
+    width: 95%;
+    padding: 8%;
   }
+ 
 }
 @media only screen and (max-width: 700px) {
   .wrapper {

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 import Snackbar from "../components/Snackbar.vue";
 export default {
   components: {
@@ -39,7 +39,6 @@ export default {
     this.$store.dispatch("actionLoading", {
       loading: true,
     });
-    console.log(this.$store.state);
     this.current_userid = firebase.auth().currentUser.uid;
     this.getData();
   },
@@ -149,6 +148,7 @@ export default {
   margin: 5px auto;
 }
 .card-title {
+  font-family: "Montserrat", sans-serif;
   text-align: center;
   text-transform: uppercase;
   font-size: 24px;
@@ -158,6 +158,7 @@ export default {
 .card-text {
   text-align: center;
   font-size: 18px;
+  font-family: "Montserrat", sans-serif;
   margin-bottom: 20px;
 }
 .card-btn {
@@ -195,10 +196,37 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+@media only screen and (max-width: 1100px) and (min-width: 701px)  {
+.main {
+    width:85%;
+    margin: 2% auto;
+  }
+  .card-wrap {
+    width: 86%;
+  }
+  .card-content {
+    margin: 0px auto;
+  }
+  .card-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  .card-text {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .card-btn {
+    margin-bottom: 10px;
+  }
+}
 @media only screen and (max-width: 700px) {
   .main {
     width: 100%;
     margin: 2% auto;
+  }
+  .card-wrap {
+    width: 86%;
   }
   .card-content {
     margin: 0px auto;

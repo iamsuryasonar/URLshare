@@ -42,11 +42,16 @@ export default {
 .title {
   margin: 30px auto;
   font-size: 40px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  letter-spacing: 3px;
 }
 .description {
   font-size: 25px;
   text-align: justify;
   text-justify: inter-word;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
 }
 .descriptionandbutton {
   width: 50%;
@@ -55,6 +60,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
 }
 .linkviewimage {
   display: grid;
@@ -77,6 +84,8 @@ export default {
   font-size: 25px;
   text-decoration-line: none;
   color: white;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
 }
 .buttonandatag a:hover {
   color: rgb(45, 209, 154);
