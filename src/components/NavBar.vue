@@ -265,10 +265,10 @@ export default {
   align-items: center;
 }
 input {
-  font-size: 14px;
+  font-size: 18px;
   border: 1px solid rgb(45, 209, 154);
   border-radius: 0.25rem;
-  padding: 0.5em 0.75em;
+ padding: 0.25em 0.5em;
   color: white;
   background-color: transparent;
   width: 100%;
@@ -382,6 +382,7 @@ a{
 }
 .activenavitem {
   color: rgb(45, 209, 154);
+  box-shadow: 0px 0px 1px 1px yellow;
   font-weight: bolder;
   font-size: 18px;
 }
@@ -425,6 +426,7 @@ a{
   .menuactivenavitem {
     font-family: "Montserrat", sans-serif;
     color: rgb(45, 209, 154);
+    box-shadow: 0px 0px 1px 1px yellow;
     font-weight: bolder;
     font-size: 28px;
   }
