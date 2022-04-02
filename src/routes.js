@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "./store/store";
-import firebase from "firebase";
-
+import firebase from 'firebase/app';
 Vue.use(VueRouter);
 
 function guardwhenoffline(to, from, next) {

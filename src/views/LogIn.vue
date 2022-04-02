@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from 'firebase/app';
 import Vue from "vue";
 import Snackbar from "../components/Snackbar.vue";
 

@@ -1,17 +1,19 @@
 import Vue from "vue";
 import App from "./App.vue";
 import store from "./store/store";
-import firebase from "firebase";
 import router from "./routes";
 import firebaseConfig from "../firebaseconfig.js";
-
+import firebase from 'firebase/app';
+import "firebase/database"
+import "firebase/storage"
+import "firebase/auth"
 /* Initialize firebase with your configuration */
 firebase.initializeApp(firebaseConfig);
 
 // firebase.analytics();
 
 /* Bind firebase to your Vue instance */
-Vue.prototype.$firebase = firebase;
+// Vue.prototype.$firebase = firebase;
 
 Vue.config.productionTip = false;
 
