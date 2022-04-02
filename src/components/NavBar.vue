@@ -268,7 +268,7 @@ input {
   font-size: 18px;
   border: 1px solid rgb(45, 209, 154);
   border-radius: 0.25rem;
- padding: 0.25em 0.5em;
+  padding: 0.25em 0.5em;
   color: white;
   background-color: transparent;
   width: 100%;
@@ -358,7 +358,7 @@ i:hover {
   justify-content: center;
   align-items: center;
 }
-a{
+a {
   text-decoration: none;
   color: white;
 }

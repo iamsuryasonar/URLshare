@@ -54,6 +54,7 @@ export default {
   padding: 15px;
 }
 .snackbar p {
+  font-family: "Montserrat", sans-serif;
   font-size: 20px;
 }
 </style>
