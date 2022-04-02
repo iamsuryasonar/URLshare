@@ -382,7 +382,7 @@ a {
 }
 .activenavitem {
   color: rgb(45, 209, 154);
-  box-shadow: 0px 0px 1px 1px yellow;
+  border-bottom: 2px solid #e4e403;
   font-weight: bolder;
   font-size: 18px;
 }
@@ -426,7 +426,7 @@ a {
   .menuactivenavitem {
     font-family: "Montserrat", sans-serif;
     color: rgb(45, 209, 154);
-    box-shadow: 0px 0px 1px 1px yellow;
+    border-bottom: 2px solid #e4e403;
     font-weight: bolder;
     font-size: 28px;
   }
