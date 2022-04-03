@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 import Snackbar from "../components/Snackbar.vue";
 export default {
   components: {
@@ -121,7 +121,6 @@ export default {
 };
 </script>
 <style scoped>
-
 html {
   background-color: #151515;
 }
@@ -255,10 +254,10 @@ a:hover {
 .textsize {
   font-size: 20px;
 }
-.loginandalreadyuser{
-display: flex;
-justify-content: space-between;
-align-items: center;
+.loginandalreadyuser {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media only screen and (max-width: 1100px) and (min-width: 701px) {
@@ -268,7 +267,9 @@ align-items: center;
     padding: 10%;
     margin: auto;
   }
-
+  ul {
+    width: 100%;
+  }
   li {
     margin: 2%;
     width: 100%;
@@ -279,12 +280,14 @@ align-items: center;
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
+    width: 85%;
     height: 80vh;
-    width: auto;
-    padding: 10%;
+    padding: 0;
     margin: auto;
   }
-
+  ul {
+    width: 100%;
+  }
   li {
     margin: 2%;
     width: 100%;

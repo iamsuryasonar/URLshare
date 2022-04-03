@@ -164,7 +164,6 @@ export default {
 };
 </script>
 <style scoped>
-
 html {
   background-color: #151515;
 }
@@ -305,6 +304,9 @@ a:hover {
     padding: 10%;
     margin: auto;
   }
+  ul{
+    width: 100%;
+  }
 
   li {
     margin: 2%;
@@ -316,12 +318,14 @@ a:hover {
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
+    width: 85%;
     height: 80vh;
-    width: auto;
-    padding: 10%;
+    padding: 0;
     margin: auto;
   }
-
+ul{
+    width: 100%;
+  }
   li {
     margin: 2%;
     width: 100%;

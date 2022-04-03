@@ -242,7 +242,7 @@ li {
     height: 100vh;
     width: 85%;
     padding: 0;
-    margin: auto;
+    margin: 10% auto;
   }
   ul {
     width: 95%;
