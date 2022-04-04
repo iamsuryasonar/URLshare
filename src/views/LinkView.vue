@@ -28,6 +28,7 @@
           :key="index"
           @click="clickedlink(item.link)"
         >
+          <img class="domain_icon" :src="getImgUrl(item.link)" alt="" />
           <div class="card-header">
             <i class="fas fa-link"></i>
           </div>
@@ -43,6 +44,7 @@
 
 <script>
 import Snackbar from "../components/Snackbar.vue";
+// src="https://www.youtube.com/favicon.ico"
 export default {
   components: {
     Snackbar,
@@ -59,7 +61,6 @@ export default {
       if (this.linkview_items.image_url != null) {
         return this.linkview_items.image_url;
       } else {
-        console.log(this.url);
         return this.url;
       }
     },
@@ -74,6 +75,12 @@ export default {
   methods: {
     clickedlink(link) {
       window.location.href = link;
+    },
+    getImgUrl(url) {
+      let domain = new URL(url);
+      domain = domain.hostname;
+      // let domain = "www.facebook.com";
+      return "https://" + domain + "/favicon.ico";
     },
   },
 };
@@ -158,6 +165,7 @@ export default {
   margin-bottom: 20px;
 }
 .card-wrap {
+  position: relative;
   cursor: pointer;
   margin: 20px 20px;
   width: 100%;
@@ -174,6 +182,14 @@ export default {
 }
 .card-wrap:hover {
   transform: scale(1.05);
+}
+.domain_icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 .card-header {
   display: grid;
