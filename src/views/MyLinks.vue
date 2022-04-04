@@ -2,6 +2,7 @@
   <div class="main">
     <Snackbar class="snackbar"></Snackbar>
     <div class="card-wrap" v-for="(item, index) in items" :key="index">
+      <img class="domain_icon" :src="getImgUrl(item.link)" alt="" />
       <div class="card-header">
         <i class="fas fa-link"></i>
       </div>
@@ -44,6 +45,12 @@ export default {
   },
 
   methods: {
+    getImgUrl(url) {
+      let domain = new URL(url);
+      domain = domain.hostname;
+      // let domain = "www.facebook.com";
+      return "https://" + domain + "/favicon.ico";
+    },
     getData() {
       this.items.length = 0;
       this.$store.dispatch("actionLoading", {
@@ -103,6 +110,7 @@ export default {
   width: 85%;
 }
 .card-wrap {
+  position: relative;
   margin: 20px auto;
   width: 85%;
   background: #fff;
@@ -118,6 +126,14 @@ export default {
 }
 .card-wrap:hover {
   transform: scale(1.1);
+}
+.domain_icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 
 .card-header {
@@ -196,9 +212,9 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-@media only screen and (max-width: 1100px) and (min-width: 701px)  {
-.main {
-    width:85%;
+@media only screen and (max-width: 1100px) and (min-width: 701px) {
+  .main {
+    width: 85%;
     margin: 2% auto;
   }
   .card-wrap {

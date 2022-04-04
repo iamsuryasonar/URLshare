@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="usernameandcopytoclipboard">
-            <p class="textsize">{{ username }}</p>
+            <a :href="text_to_copy" class="textsize username">{{ username }}</a>
             <input
               ref="myinput"
               readonly
@@ -466,7 +466,9 @@ img {
   align-items: center;
   margin-top: 20px;
 }
-.iconandusername p {
+.iconandusername a {
+  text-decoration: none;
+  cursor: pointer;
   font-size: 25px;
   color: #45494d;
   margin: auto 20px;
