@@ -145,7 +145,6 @@ export default {
 </script>
 
 <style scoped>
-
 html {
   background-color: #151515;
 }
@@ -192,16 +191,19 @@ textarea {
   background-color: transparent;
   width: 100%;
 }
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
   opacity: 0.56;
   color: black;
 }
 
-input:hover, textarea:hover {
+input:hover,
+textarea:hover {
   border-color: yellow;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border: 1px solid transparent;
   box-shadow: 0px 0px 1px 1px yellow;

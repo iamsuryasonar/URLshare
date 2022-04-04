@@ -278,6 +278,7 @@ export default {
     margin: 10px auto;
   }
   .card-content {
+    width: 90%;
     margin: 0px auto;
   }
   .card-wrap {

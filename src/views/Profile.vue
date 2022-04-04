@@ -29,7 +29,7 @@
   left: -9999999px;"
               :value="text_to_copy"
             />
-            <a @click="copyToClipboard">
+            <a class="copytoclipboard" @click="copyToClipboard">
               <i class="far fa-clipboard"></i>
             </a>
           </div>
@@ -399,6 +399,10 @@ p {
   padding: 0;
   overflow: hidden;
 }
+a {
+  text-decoration: none;
+  color: #45494d;
+}
 
 .wrapper {
   width: 50%;
@@ -466,8 +470,9 @@ img {
   align-items: center;
   margin-top: 20px;
 }
-.iconandusername a {
-  text-decoration: none;
+
+.copytoclipboard {
+  align-self: center;
   cursor: pointer;
   font-size: 25px;
   color: #45494d;
@@ -477,11 +482,6 @@ img {
 .usernameandcopytoclipboard {
   display: flex;
   flex-direction: row;
-  margin-right: 20px;
-}
-.usernameandcopytoclipboard a {
-  align-self: center;
-  font-size: 26px;
 }
 .bio {
   margin: 15px 0px;
@@ -607,7 +607,7 @@ i:hover {
 }
 
 @media only screen and (max-width: 1100px) and (min-width: 701px) {
-  .iconandusername p {
+  .copytoclipboard {
     font-size: 22px;
   }
   .textsize {
@@ -634,7 +634,7 @@ i:hover {
     padding: 4%;
     margin: auto;
   }
-  .iconandusername p {
+  .copytoclipboard {
     font-size: 18px;
   }
   .textsize {

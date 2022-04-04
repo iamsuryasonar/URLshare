@@ -242,14 +242,15 @@ export default {
     margin: 2% auto;
   }
   .card-wrap {
-    width: 86%;
+    width: 90%;
   }
   .card-content {
+    width: 90%;
     margin: 0px auto;
   }
   .card-title {
     margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 16px;
   }
   .card-text {
     margin-bottom: 10px;
