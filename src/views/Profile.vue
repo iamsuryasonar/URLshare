@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 import Vue from "vue";
 import Snackbar from "../components/Snackbar.vue";
 Vue.directive("click-outside", {
@@ -388,7 +388,6 @@ export default {
 };
 </script>
 <style scoped>
-
 html {
   background-color: #151515;
 }
@@ -403,7 +402,7 @@ p {
 
 .wrapper {
   width: 50%;
-  height: 90vh;
+  height: auto;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -527,6 +526,7 @@ button:hover {
 }
 .buttondelete {
   color: white;
+  margin-bottom: 50px;
 }
 .buttondelete:hover {
   color: red;
@@ -604,7 +604,7 @@ i:hover {
   font-family: "Montserrat", sans-serif;
 }
 
-@media only screen and (max-width: 1100px) and (min-width: 701px)  {
+@media only screen and (max-width: 1100px) and (min-width: 701px) {
   .iconandusername p {
     font-size: 22px;
   }
@@ -624,7 +624,6 @@ i:hover {
     width: 95%;
     padding: 8%;
   }
- 
 }
 @media only screen and (max-width: 700px) {
   .wrapper {
