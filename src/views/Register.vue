@@ -135,8 +135,8 @@ html {
 
 .wrapper {
   width: 60%;
-  margin: auto;
-  height: 90vh;
+  margin: 50px auto;
+  height: calc(90vh - 50px);
   display: flex;
   flex-direction: column;
   justify-content: center;

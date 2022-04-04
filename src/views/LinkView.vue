@@ -77,8 +77,13 @@ export default {
       window.location.href = link;
     },
     getImgUrl(url) {
-      let domain = new URL(url);
-      domain = domain.hostname;
+      let domain = null;
+      try {
+        domain = new URL(url);
+        domain = domain.hostname;
+      } catch (error) {
+        domain = "https://urlshare.netlify.app/favicon.ico";
+      }
       // let domain = "www.facebook.com";
       return "https://" + domain + "/favicon.ico";
     },
@@ -88,7 +93,7 @@ export default {
 <style scoped>
 .main {
   width: 90%;
-  margin: 5% auto;
+  margin: calc(5% + 50px) auto;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -257,7 +262,6 @@ export default {
 @media only screen and (max-width: 700px) {
   .main {
     width: 100%;
-    margin: 2% auto;
   }
   .container {
     display: flex;

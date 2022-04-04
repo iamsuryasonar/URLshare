@@ -407,7 +407,7 @@ a {
 .wrapper {
   width: 50%;
   height: auto;
-  margin: auto;
+  margin: 50px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -632,7 +632,7 @@ i:hover {
     height: 80vh;
     width: auto;
     padding: 4%;
-    margin: auto;
+    margin: 40px auto;
   }
   .copytoclipboard {
     font-size: 18px;

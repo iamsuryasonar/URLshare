@@ -1,5 +1,5 @@
 <template>
-  <div v-click-outside="onClickOutside">
+  <nav v-click-outside="onClickOutside">
     <div class="container">
       <div class="logotitle">
         <a @click="menu = false" href="/">URLshare</a>
@@ -118,7 +118,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -244,6 +244,8 @@ export default {
 </script>
 <style scoped>
 .container {
+  position: fixed;
+  top: 0;
   width: 100%;
   height: 50px;
   padding: 30px;
@@ -341,7 +343,7 @@ i:hover {
   color: #5bbdbc;
 }
 .menuoverlay {
-  position: fixed;
+  /* position: fixed; */
   height: 250px;
   width: 100vw;
   background-color: #383d41e0;

@@ -158,8 +158,8 @@ html {
 
 .wrapper {
   width: 70%;
-  margin: auto;
-  height: 100vh;
+  margin: 50px auto;
+  height: calc(90vh - 50px);
   display: flex;
   flex-direction: column;
   justify-content: center;

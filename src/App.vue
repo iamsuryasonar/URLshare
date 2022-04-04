@@ -18,8 +18,7 @@ export default {
   },
   computed: {},
   methods: {},
-  created() {
-    
-  },
+  created() {},
 };
 </script>
+<style scoped></style>

@@ -3,7 +3,8 @@
     <div class="descriptionandbutton">
       <p class="title">URLshare</p>
       <p class="description">
-        One link for every other links. Now Share all your links by your user name.
+        One link for every other links. Now Share all your links by your user
+        name.
       </p>
       <div class="buttonandatag">
         <button @click="getstarted">Get Started</button>
@@ -11,7 +12,10 @@
       </div>
     </div>
     <div class="linkviewimage">
-      <img src="../assets/welcomeimage.jpg" alt="an image containing shared urls using Url share web app"/>
+      <img
+        src="../assets/welcomeimage.jpg"
+        alt="an image containing shared urls using Url share web app"
+      />
     </div>
   </div>
 </template>
@@ -34,6 +38,7 @@ export default {
 .container {
   width: 100%;
   height: 90vh;
+  margin: 50px auto;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -68,7 +73,7 @@ export default {
   align-content: center;
 }
 .linkviewimage img {
-  box-shadow: 7px 8px 13px 0px rgba(0,0,0,0.75);
+  box-shadow: 7px 8px 13px 0px rgba(0, 0, 0, 0.75);
   height: 90%;
   width: 90%;
   border-radius: 20px;
@@ -143,7 +148,7 @@ button:hover {
     padding: 4px 10px;
     font-size: 20px;
   }
-  .buttonandatag{
+  .buttonandatag {
     margin: 20px auto;
   }
   .buttonandatag a {
