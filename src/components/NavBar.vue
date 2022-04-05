@@ -244,6 +244,7 @@ export default {
 </script>
 <style scoped>
 .container {
+  background-color: #00000013;
   position: fixed;
   top: 0;
   width: 100%;
@@ -343,11 +344,13 @@ i:hover {
   color: #5bbdbc;
 }
 .menuoverlay {
-  /* position: fixed; */
+  position: fixed;
+  top: 0;
   height: 250px;
   width: 100vw;
   background-color: #383d41e0;
-  z-index: 990;
+  padding-top: 40px;
+  z-index: 97;
   display: flex;
   flex-direction: column;
   justify-content: center;
