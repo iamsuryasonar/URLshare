@@ -3,7 +3,6 @@
     <Snackbar></Snackbar>
     <div class="overlaycontainer" v-click-outside="onClickOutside">
       <div class="container">
-        <!-- <p class="title">Profile</p> -->
         <div class="iconandusername">
           <div class="profilepicture" @click="choose_image_overlay">
             <input
@@ -13,8 +12,8 @@
               @change="previewImage"
               accept="image/*"
             />
-            <span v-if="image != null">
-              <img alt="" :src="image" />
+            <span>
+              <img alt="" :src="imageUrl" />
             </span>
             <div class="avataroverlay">
               <i class="fas fa-edit"> </i>
@@ -193,6 +192,7 @@ export default {
       return "http://" + window.location.host + "/" + this.username;
     },
     imageUrl() {
+      console.log(this.image);
       if (this.image != null) {
         return this.image;
       } else {

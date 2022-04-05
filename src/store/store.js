@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 
 Vue.use(Vuex);
 
@@ -277,7 +277,6 @@ const store = new Vuex.Store({
     deleteaccount({ commit }, payload) {
       commit("setLoading", true);
       var user = firebase.auth().currentUser;
-      const db = firebase.firestore();
       let value;
       firebase
         .database()
@@ -287,7 +286,6 @@ const store = new Vuex.Store({
             value = snapshot.val().username;
           }
         });
-      var userId = firebase.auth().currentUser.uid;
       firebase
         .auth()
         .currentUser.reauthenticateWithCredential(
